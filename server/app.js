@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const cookieParser=require('cookie-parser')
 const app = express();
 const mongoose = require("mongoose");
@@ -6,6 +7,7 @@ const mongoose = require("mongoose");
 require('dotenv').config();
 
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
+//const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
 const cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,6 +34,7 @@ app.use(
 // });
 
 app.use(authenticationMiddleware);
+//app.use(authorizatonMiddleware);
 
 
 const db_name = process.env.DB_NAME;
