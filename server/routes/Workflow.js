@@ -1,5 +1,5 @@
 const express = require("express");
-const Workflow = require("../Models/Workflow_Model"); // * Importing the student model
+const Workflow = require("../models/Workflow_Model"); // * Importing the student model
 const router = express.Router();
 
 // * Get all students
@@ -23,21 +23,13 @@ router.get("/:id", async (req, res) => {
 });
 
 // * Create a student
-
 router.post("/", async (req, res) => {
   try {
-    const newWorkflow = new Workflow({
-      Workflow_Id: req.body.Workflow_Id,
-      User_Id: req.body.User_Id,
-      Category: req.body.Category,
-      Sub_Category: req.body.Sub_Category,
-      Workflow_Steps: req.body.Workflow_Steps,
-      Issue_Type: req.body.Issue_Type
-    });
-    const workflow = await newWorkflow.save();
-    return res.status(201).json({workflow,msg:"created"});
-  } catch (err) {
-    return res.status(500).json({ error: err });
+    const newwf = await Workflow.create(req.body);
+    return res.status(201).json(newwf);
+  } catch (e) {
+    console.error("Error creating workflow:", e);
+    return res.status(400).json({ message: e.message });
   }
 });
 

@@ -1,5 +1,5 @@
 const express = require("express");
-const ReportsModel = require("../Models/ReportsModel"); // Importing the ReportsModel
+const ReportsModel = require("../models/ReportsModel"); // Importing the ReportsModel
 const router = express.Router();
 
 // Get all Reports
@@ -13,21 +13,16 @@ router.get("/", async (req, res) => {
 });
 
 // Create a Report
+
+
+
 router.post("/", async (req, res) => {
   try {
-    const newReport = new ReportsModel({
-      Report_Id: req.body.Report_Id,
-      User_Id: req.body.User_Id,
-      Tstatus: req.body.Tstatus,
-      Manager_Id: req.body.Manager_Id,
-      R_data: req.body.R_data,
-    });
-
-    const report = await newReport.save();
-
-    return res.status(201).json({ report, msg: "created" });
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+    const newReport = await ReportsModel.create(req.body);
+    return res.status(201).json(newReport);
+  } catch (e) {
+    console.error("Error creating Report:", e);
+    return res.status(400).json({ message: e.message });
   }
 });
 

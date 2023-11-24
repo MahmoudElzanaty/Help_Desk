@@ -5,10 +5,10 @@ const schemaOptions = {
 };
 
 const FAQSchema = new mongoose.Schema({
-  Ticket_id: {
-    type: String,
-    minLength: 1,
+  tickets: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: "tickets", // Reference the T model
   },
   status: {
     type: Boolean,
