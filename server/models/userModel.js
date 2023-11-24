@@ -2,12 +2,14 @@ const mongoose = require('mongoose');
 const schemaOptions = {
   strict: false,
   timestamps: false,
+  versionKey: false,
 };
 
 const UserSchema = new mongoose.Schema({
-  User_Id: {
-    type: Number,
+  user_id: {
+    type: String,
     minLength: 3,
+    maxLength: 10,
     required: true,
   },
   Email: {
@@ -15,10 +17,18 @@ const UserSchema = new mongoose.Schema({
     minLength: 1,
     maxLength: 30,
   },
-  Role: {
-    type: Number,
+  is_Agent: {
+    type: Boolean,
     required: true,
-    default: 1,
+    default: false,
+  },
+  is_Manager: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  Phone_Number: {
+    type: String,
   },
   Rate: {
     type: Number,
@@ -27,14 +37,5 @@ const UserSchema = new mongoose.Schema({
   },
 }, schemaOptions);
 
-const managerSchema = new mongoose.Schema({
-  managerId: {
-    type: Number,
-    minLength: 3,
-    required: false,
-  },
-  Users: [UserSchema],
-}, schemaOptions);
-
-// Use managerSchema as the model for the "Users" collection
-module.exports = mongoose.model('Users', managerSchema);
+// Use UserSchema as the model for the "Users" collection
+module.exports = mongoose.model('Users', UserSchema);

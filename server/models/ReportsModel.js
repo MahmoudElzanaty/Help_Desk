@@ -5,21 +5,22 @@ const schemaOptions = {
 };
 
 const ReportSchema = new mongoose.Schema({
-  Report_Id: {
-    type: String,
-    minLength: 1,
-  },
-  User_Id: {
-    type: String,
-    minLength: 1,
-  },
+
+  tickets: {
+    type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Tickets", // Reference the Users model
+    },
+ 
+  agent: {
+    type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Users", // Reference the Users model
+    },
+
   Tstatus: {
     type: Boolean,
     default: true,
-  },
-  Manager_Id: {
-    type: String,
-    minLength: 1,
   },
   R_data: {
     type: String,

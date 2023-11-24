@@ -3,12 +3,12 @@ const express = require("express");
 const cookieParser=require('cookie-parser')
 const app = express();
 const mongoose = require("mongoose");
-const ticketRouter = require("./Routes/Tickets");
-const workflowRouter = require("./Routes/Workflow");
-const userRouter = require("./Routes/Users");
-const FAQ = require("./Routes/FAQ");
-const Reports = require("./Routes/Reports");
-const Communication = require("./Routes/Communication");
+const ticketRouter = require("./routes/Tickets");
+const workflowRouter = require("./routes/Workflow");
+const userRouter = require("./routes/Users");
+const FAQ = require("./routes/FAQ");
+const Reports = require("./routes/Reports");
+const Communication = require("./routes/Communication");
 
 require('dotenv').config();
 

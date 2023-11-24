@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Communication = require("../Models/CommunicationModel");
+const Communication = require("../models/CommunicationModel");
 
 // Get all communications
 router.get("/", async (req, res) => {

@@ -5,13 +5,13 @@ const schemaOptions = {
 };
 
 const CommunicationSchema = new mongoose.Schema({
-  User_Id: {
-    type: Number,
-    min: 1,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: "users", 
   },
-  Agent_Id: {
-    type: String,
+  agent: {
+    type: mongoose.Schema.Types.ObjectId,
     min: 1,
     required: true,
   },
@@ -19,10 +19,6 @@ const CommunicationSchema = new mongoose.Schema({
     type: String,
     minLength: 3,
     maxLength: 1000,
-  },
-  Date: {
-    type: Date,
-    required: true,
   },
   Message_Id: {
     type: String,
