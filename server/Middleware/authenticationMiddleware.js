@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+/*const jwt = require("jsonwebtoken");
 const secretKey = "s1234rf,.lp";
 
 module.exports = function authenticationMiddleware(req, res, next) {
@@ -26,3 +26,4 @@ module.exports = function authenticationMiddleware(req, res, next) {
     next();
   });
 };
+*/

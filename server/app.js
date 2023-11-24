@@ -1,19 +1,29 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
+//const jwt = require("jsonwebtoken");
 const cookieParser=require('cookie-parser')
 const app = express();
 const mongoose = require("mongoose");
+const ticketRouter = require("./Routes/Tickets");
+const workflowRouter = require("./Routes/Workflow");
+const userRouter = require("./Routes/Users");
+const FAQ = require("./Routes/FAQ");
+const Reports = require("./Routes/Reports");
+const Communication = require("./Routes/Communication");
 
 require('dotenv').config();
 
-const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
+//const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 //const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
 const cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use("/Tickets", ticketRouter);
+app.use("/Workflow", workflowRouter);
+app.use("/users", userRouter);
+app.use("/FAQ", FAQ);
+app.use("/Communication", Communication);
+app.use("/Reports", Reports);
 app.use(cookieParser())
-
 app.use(
   cors({
     origin: process.env.ORIGIN,
@@ -33,7 +43,7 @@ app.use(
 //   next();
 // });
 
-app.use(authenticationMiddleware);
+//app.use(authenticationMiddleware);
 //app.use(authorizatonMiddleware);
 
 

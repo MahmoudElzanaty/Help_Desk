@@ -1,4 +1,4 @@
-module.exports= function authorizationMiddleware(roles) {
+/*module.exports= function authorizationMiddleware(roles) {
     return (req, res, next) => {
       console.log('req:',req)
       const userRole = req.user.role;
@@ -8,4 +8,4 @@ module.exports= function authorizationMiddleware(roles) {
       next();
     };
   }
-  
+  */
