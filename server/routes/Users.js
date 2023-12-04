@@ -1,25 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controller/UserController");
-const authorizationMiddleware=require('../Middleware/authorizationMiddleware')
+const authorizationMiddleware = require('../Middleware/authorizationMiddleware');
 
-router.post("/", authorizationMiddleware(['agent' , 'customer', 'manager']),UserController.createUser);
+// Create user
+router.post("/", authorizationMiddleware(['agent', 'customer', 'manager']), userController.createUser);
 
-// * Get all users
-router.get("/",  authorizationMiddleware(['manager','agent']),UserController.getAllUsers);
+// Get all users
+router.get("/", authorizationMiddleware(['manager', 'agent']), userController.getAllUsers);
 
-router.get("/", authorizationMiddleware(['agent' , 'customer', 'manager']),UserController.login);
+// Login
+router.post("/login", authorizationMiddleware(['agent', 'customer', 'manager']), userController.login);
 
-// * Get one user
-router.get("/:id", authorizationMiddleware(['agent','manager']), UserController.getUserById);
+// Get one user
+router.get("/:id", authorizationMiddleware(['agent', 'manager']), userController.getUserById);
 
-// * Update one user
-router.put("/:id",  authorizationMiddleware(['manager','agent']),UserController.updateUserById);
+// Update one user
+router.put("/:id", authorizationMiddleware(['manager', 'agent']), userController.updateUserById);
 
-// * Delete one user
-router.delete("/:id", authorizationMiddleware(['manager']), UserController.deleteUserById);
-
-// get shopping cart
-
+// Delete one user
+router.delete("/:id", authorizationMiddleware(['manager']), userController.deleteUserById);
 
 module.exports = router;
