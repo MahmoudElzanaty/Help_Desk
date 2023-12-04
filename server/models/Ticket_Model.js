@@ -18,20 +18,17 @@ const ticketSchema = new mongoose.Schema(
 
     Category: {
       type: String,
-      minLength: 3,
-      maxLength: 30,
+      enum: ['Hardware', 'Software', 'Network'],
       required: true,
     },
     Sub_Category: {
       type: String,
-      minLength: 3,
-      maxLength: 30,
+      enum:['Desktops', 'Laptops', 'Printers', 'Servers', 'Networking equipment','Operating system', 'Application software', 'Custom software', 'Integration issues','Email issues', 'Internet connection problems', 'Website errors'],
       required: true,
     },
     Priority: {
       type: String,
-      minLength: 3,
-      maxLength: 30,
+      enum: ['High', 'Medium', 'Low'],
       required: true,
     },
     Date: {
@@ -39,10 +36,26 @@ const ticketSchema = new mongoose.Schema(
       required: true,
     },
     Status: {
-      type: Boolean,
-      default: true,
-      required: true,
-    },
+      type: String,
+      enum: ['open', 'closed', 'in progress'],
+        default: true,
+        required: true,
+      },
+      is_Open: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
+      is_Pending: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
+      is_Closed: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
     TDescribtion: {
       type: String,
       minLength: 3,

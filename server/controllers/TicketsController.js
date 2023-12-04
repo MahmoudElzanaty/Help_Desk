@@ -6,52 +6,90 @@ const Report = require('../models/ReportModel'); // hat3ml require lel Report mo
 const Ticket = require('../models/Ticket_Model'); // hat3ml require lel Ticket model
 const User = require('../models/userModel'); // hat3ml require lel User model
 const Workflow = require('../models/Workflow_Model'); // hat3ml require lel Workflow model
+require('dotenv').config();
 
-// tickteing system yastaaaaa
-exports.createTicket = async (req, res) => {
+const secretKey = process.env.SECRET_KEY;
+
+const TicketsController = {
+  getAllTickets: async (req, res) => {
     try {
-      const { title, description, category } = req.body; // hatgeb el title, description, category mn el request body
-      if (!title || !description || !category) {// law msh mawgod yb2a msh mawgod ba2a
+      const tickets = await Ticket.find();
+      return res.status(200).json(tickets);
+    } catch (err) {
+      return res.status(500).json({ error: err });
+    }
+  } ,
+  getTicketById: async (req, res) => {
+    try {
+      const ticket = await Ticket.findById(req.params.id);
+      return res.status(200).json(ticket);
+    } catch (err) {
+      return res.status(500).json({ error: err });
+    }
+  },
+  //create ticket
+  createTicket: async (req, res) => {
+    try {
+      const { title, description, category } = req.body;
+      if (!title || !description || !category) {
         return res.status(400).json({ error: 'Title, description, and category are required fields' });
       }
-      const userId = req.user?.id; // hatgeb el user id mn el authenticated user
-      if (!userId) { // enta 3arf ba2a
+      const userId = req.user?.id;
+      if (!userId) {
         return res.status(401).json({ error: 'User not authenticated' });
       }
-      const newTicket = new Ticket({// hat3ml instance mn el ticket model
+      const newTicket = new Ticket({
         userId,title,description,category,
       });
-      const savedTicket = await newTicket.save(); // hat save el ticket de fel database
+      const savedTicket = await newTicket.save();
       res.status(201).json(savedTicket);
     } catch (error) {
-      if (error.name === 'ValidationError') { // law el error name bta3o validation error yb2a msh mawgod ba2a
+      if (error.name === 'ValidationError') {
         return res.status(400).json({ error: 'Validation error. Check your input data.' });
       }  
       res.status(500).json({ error: error.message });
     }
-  };
-  
-
-  exports.updateTicket = async (req, res) => {
+  },
+  //update ticket
+  updateTicket: async (req, res) => {
     try {
-      const Ticket = require('../models/Ticket_Model'); // ben2ol y3ne 2no el ticket model mawgod fel file de
-      const ticketId = req.params.id;// hatgeb el ticket id mn el request params
-      const existingTicket = await Ticket.findById(ticketId);// dawar 3la el ticket de bel id bta3o y 7ag
-      if (!existingTicket) { // hancheck law msh mawgod yb2a msh mawgod we 3ala allah 7akyto
+      const Ticket = require('../models/Ticket_Model');
+      const ticketId = req.params.id;
+      const existingTicket = await Ticket.findById(ticketId);
+      if (!existingTicket) {
         return res.status(404).json({ error: 'Ticket not found' });
       }
-      if (req.body.title) {// law 3ayz t3ml update 3la el title
+      if (req.body.title) {
         existingTicket.title = req.body.title;
       }
-      if (req.body.description) {// law 3ayz t3ml update 3la el description
+      if (req.body.description) {
         existingTicket.description = req.body.description;
       }
-      if (req.body.category) {// law 3ayz t3ml update 3la el category
+      if (req.body.category) {
         existingTicket.category = req.body.category;
       }
-      const updatedTicket = await existingTicket.save(); // save ybny 3ayz t3mlo update 3la el ticket de fel database
+      const updatedTicket = await existingTicket.save();
       res.status(200).json(updatedTicket);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  };
+  },
+  //delete ticket
+  deleteTicket: async (req, res) => {
+    try {
+      const deletedTicket = await Ticket.findByIdAndDelete(req.params.id);
+      if (!deletedTicket) {
+        return res.status(404).json({ error: 'Ticket not found' });
+      }
+      res.status(200).json({ message: 'Ticket deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+
+
+}
+
+module.exports = TicketsController;
+
