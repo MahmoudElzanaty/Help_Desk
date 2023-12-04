@@ -1,5 +1,5 @@
 const express = require("express");
-//const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const cookieParser=require('cookie-parser')
 const app = express();
 const mongoose = require("mongoose");
@@ -12,8 +12,8 @@ const Communication = require("./routes/Communication");
 
 require('dotenv').config();
 
-//const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
-//const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
+const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
+const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
 const cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -43,8 +43,8 @@ app.use(
 //   next();
 // });
 
-//app.use(authenticationMiddleware);
-//app.use(authorizatonMiddleware);
+app.use(authenticationMiddleware);
+app.use(authorizatonMiddleware);
 
 
 const db_name = process.env.DB_NAME;

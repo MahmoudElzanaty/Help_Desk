@@ -6,12 +6,7 @@ const schemaOptions = {
 };
 
 const UserSchema = new mongoose.Schema({
-  user_id: {
-    type: String,
-    minLength: 3,
-    maxLength: 10,
-    required: true,
-  },
+  
   Email: {
     type: String,
     minLength: 1,
