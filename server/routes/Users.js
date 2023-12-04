@@ -1,28 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const Users = require("../models/userModel");
+const userController = require("../controller/UserController");
+const authorizationMiddleware=require('../Middleware/authorizationMiddleware')
 
-// Get all users
-router.get("/", async (req, res) => {
-  try {
-    const users = await Users.find();
-    return res.status(200).json(users);
-  } catch (e) {
-    console.error("Error fetching users:", e);
-    //print 
-    return res.status(500).json({ message: e.message });
-  }
-});
+router.post("/", authorizationMiddleware(['agent' , 'customer', 'manager']),UserController.createUser);
 
-// Create a new user
-router.post("/", async (req, res) => {
-  try {
-    const newUser = await Users.create(req.body);
-    return res.status(201).json(newUser);
-  } catch (e) {
-    console.error("Error creating user:", e);
-    return res.status(400).json({ message: e.message });
-  }
-});
+// * Get all users
+router.get("/",  authorizationMiddleware(['manager','agent']),UserController.getAllUsers);
+
+router.get("/", authorizationMiddleware(['agent' , 'customer', 'manager']),UserController.login);
+
+// * Get one user
+router.get("/:id", authorizationMiddleware(['agent','manager']), UserController.getUserById);
+
+// * Update one user
+router.put("/:id",  authorizationMiddleware(['manager','agent']),UserController.updateUserById);
+
+// * Delete one user
+router.delete("/:id", authorizationMiddleware(['manager']), UserController.deleteUserById);
+
+// get shopping cart
+
 
 module.exports = router;
