@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 require('dotenv').config();
 
+
 const secretKey = process.env.SECRET_KEY;
 
 const UserController = {
@@ -75,6 +76,33 @@ const UserController = {
       res.status(500).json({ error: error.message });
     }
   },
+  register: async (req, res) => {
+    //only a normal user is allowed to register
+    try {
+      const { user_id, Email, is_Agent, is_Manager, Phone_Number, Rate, password } = req.body;
+      const existingUser = await User.findOne({ Email });
+      if (existingUser) {
+        return res.status(409).json({ error: 'User already exists' });
+      }
+      if (!user_id || !Email) {
+        return res.status(400).json({ error: 'Incomplete data for user creation' });
+      }
+      const newUser = new User({
+        user_id,
+        Email,
+        is_Agent: is_Agent || false,
+        is_Manager: is_Manager || false,
+        Phone_Number,
+        Rate: Rate || 0,
+        password,
+      });
+      const savedUser = await newUser.save();
+      res.status(201).json(savedUser);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
 
   getUserById: async (req, res) => {
     try {
@@ -89,7 +117,6 @@ const UserController = {
       res.status(500).json({ error: error.message });
     }
   },
-
   updateUserById: async (req, res) => {
     try {
       const { user_id, Email, is_Agent, is_Manager, Phone_Number, Rate } = req.body;
@@ -103,11 +130,9 @@ const UserController = {
         { user_id, Email, is_Agent: is_Agent || false, is_Manager: is_Manager || false, Phone_Number, Rate: Rate || 0 },
         { new: true }
       );
-
       if (!updatedUser) {
         return res.status(404).json({ error: 'User not found' });
       }
-
       res.status(200).json(updatedUser);
     } catch (error) {
       res.status(500).json({ error: error.message });
