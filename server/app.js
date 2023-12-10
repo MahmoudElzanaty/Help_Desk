@@ -10,10 +10,13 @@ const FAQ = require("./routes/FAQ");
 const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
 
+const authRouter = require("./routes/auth");
+
 require('dotenv').config();
 
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
+
 const cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -23,6 +26,7 @@ app.use("/users", userRouter);
 app.use("/FAQ", FAQ);
 app.use("/Communication", Communication);
 app.use("/Reports", Reports);
+
 app.use(cookieParser())
 app.use(
   cors({
@@ -45,6 +49,9 @@ app.use(
 
 app.use(authenticationMiddleware);
 app.use(authorizatonMiddleware);
+
+app.use("/api/v1", authRouter);
+app.use("/api/v1/users", userRouter);
 
 
 const db_name = process.env.DB_NAME;

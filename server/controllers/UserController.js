@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-const productModel = require("../models/productModel");
 const sessionModel = require("../models/SessionModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");

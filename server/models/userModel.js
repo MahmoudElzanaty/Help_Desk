@@ -6,7 +6,12 @@ const schemaOptions = {
 };
 
 const UserSchema = new mongoose.Schema({
-  
+  user_id: {
+    type: String,
+    minLength: 3,
+    maxLength: 10,
+    required: true,
+  },
   Email: {
     type: String,
     minLength: 1,
@@ -30,6 +35,11 @@ const UserSchema = new mongoose.Schema({
     required: false,
     default: 0,
   },
+  role: {
+    type: String,
+    required: true,
+    default: 'user', // Set default value to 'user'
+    }
 }, schemaOptions);
 
 // Use UserSchema as the model for the "Users" collection

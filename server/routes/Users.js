@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controller/UserController");
+const userController = require("../controllers/UserController");
 const authorizationMiddleware = require('../Middleware/authorizationMiddleware');
 
 // Create user
-router.post("/", authorizationMiddleware(['agent', 'customer', 'manager']), userController.createUser);
+router.post("/", authorizationMiddleware(['agent', 'user', 'manager']), userController.createUser);
 
 // Get all users
 router.get("/", authorizationMiddleware(['manager', 'agent']), userController.getAllUsers);
 
 // Login
-router.post("/login", authorizationMiddleware(['agent', 'customer', 'manager']), userController.login);
+router.post("/login", authorizationMiddleware(['agent', 'user', 'manager']), userController.login);
 
 // Get one user
 router.get("/:id", authorizationMiddleware(['agent', 'manager']), userController.getUserById);
