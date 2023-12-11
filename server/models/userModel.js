@@ -17,6 +17,11 @@ const UserSchema = new mongoose.Schema({
     minLength: 1,
     maxLength: 30,
   },
+  Password: {
+    type: String,
+    minLength: 1,
+    maxLength: 30,
+  },
   is_Agent: {
     type: Boolean,
     required: true,
@@ -28,7 +33,7 @@ const UserSchema = new mongoose.Schema({
     default: false,
   },
   Phone_Number: {
-    type: String,
+    type: Number,
   },
   Rate: {
     type: Number,
@@ -37,5 +42,5 @@ const UserSchema = new mongoose.Schema({
   },
 }, schemaOptions);
 
-// Use UserSchema as the model for the "Users" collection
+
 module.exports = mongoose.model('Users', UserSchema);

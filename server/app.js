@@ -9,6 +9,7 @@ const userRouter = require("./routes/Users");
 const FAQ = require("./routes/FAQ");
 const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
+const Login = require("./routes/login");
 
 require('dotenv').config();
 
@@ -23,6 +24,7 @@ app.use("/users", userRouter);
 app.use("/FAQ", FAQ);
 app.use("/Communication", Communication);
 app.use("/Reports", Reports);
+app.use("/login", Login);
 app.use(cookieParser())
 app.use(
   cors({
