@@ -1,5 +1,5 @@
 const express = require("express");
-const Ticket = require("../Models/Ticket_Model");
+const Ticket = require("../models/Ticket_Model");
 const router = express.Router();
 
 // Get all Tickets
