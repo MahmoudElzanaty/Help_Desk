@@ -1,5 +1,6 @@
 const express = require("express");
 //const jwt = require("jsonwebtoken");
+const path = require('path');
 const cookieParser=require('cookie-parser')
 const app = express();
 const mongoose = require("mongoose");
@@ -11,10 +12,20 @@ const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
 const Login = require("./routes/login");
 
+
+
 require('dotenv').config();
 
 //const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 //const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build', 'index.html'));
+});
+
+
+
 const cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
