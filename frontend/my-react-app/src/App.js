@@ -1,9 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import LoginForm from './components/loginComponent';
 import RegisterForm from './components/registerComponent';
+import TicketForm from './components/createTicketComponent';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ReactDOM from 'react-dom';
-
 
 function App() {
   return (
@@ -12,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/create-ticket" element={<TicketForm />} />
         </Routes>
       </div>
     </Router>
@@ -19,6 +20,5 @@ function App() {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
 
 export default App;
