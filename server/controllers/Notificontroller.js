@@ -1,14 +1,14 @@
-//Notifi.js
+// Notifi.js
 const nodemailer = require('nodemailer');
-const UserModel = require("../Models/userModel");
-const TicketModel = require("../models/Ticket_Model");
+const UserModel = require('../Models/userModel');
+const TicketModel = require('../models/Ticket_Model'); // Update the import to match the new file name
 
 // Create a Nodemailer transporter using SMTP
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  service: 'gmail',
   auth: {
-    user: "abdulsamea2003@gmail.com",
-    pass: "zmtt vxgh onij luey",
+    user: 'abdulsamea2003@gmail.com',
+    pass: 'zmtt vxgh onij luey',
   },
 });
 
@@ -79,5 +79,3 @@ module.exports = {
   submitTicket,
   changeTicketStatus,
 };
-
-
