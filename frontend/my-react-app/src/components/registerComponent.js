@@ -42,6 +42,7 @@ const RegistrationForm = () => {
 
   return (
     <div>
+      <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Email:

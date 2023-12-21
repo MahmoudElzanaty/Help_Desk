@@ -18,11 +18,7 @@ require('dotenv').config();
 
 //const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 //const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build', 'index.html'));
-});
 
 
 
@@ -58,6 +54,21 @@ app.use(
 
 //app.use(authenticationMiddleware);
 //app.use(authorizatonMiddleware);
+
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build')));
+
+const excludeRoutes = ['/getAllTickets'];
+
+// Middleware to serve 'index.html' only for specified routes
+app.use((req, res, next) => {
+  if (excludeRoutes.some(route => req.path.startsWith(route))) {
+    // Skip serving 'index.html' for specified routes
+    next();
+  } else {
+    // Serve 'index.html' for all other routes
+    res.sendFile(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build', 'index.html'));
+  }
+});
 
 
 const db_name = process.env.DB_NAME;

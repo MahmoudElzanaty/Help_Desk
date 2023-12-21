@@ -7,7 +7,11 @@ const TicketList = () => {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await fetch('http://localhost:3000/tickets');
+        const response = await fetch('http://localhost:3000/Tickets/getAllTickets', {
+        headers: {
+        'Accept': 'application/json',
+      },
+    });
         const data = await response.json();
         setTickets(data);
       } catch (error) {
@@ -18,7 +22,6 @@ const TicketList = () => {
     fetchTickets();
   }, []);
 
-
   return (
     <div>
       <h1>Ticket List</h1>
@@ -28,10 +31,11 @@ const TicketList = () => {
         <ul>
           {tickets.map((ticket) => (
             <li key={ticket._id}>
-              <p>User: {ticket.user}</p>
-              <p>Category: {ticket.Category}</p>
-              <p>Sub Category: {ticket.Sub_Category}</p>
+              <p>User ID: {ticket.user}</p>
+              <p>Category: {ticket.category}</p>
+              <p>Sub Category: {ticket.subcategory}</p>
               <p>Status: {ticket.Status}</p>
+              <p>Description: {ticket.description}</p>
             </li>
           ))}
         </ul>

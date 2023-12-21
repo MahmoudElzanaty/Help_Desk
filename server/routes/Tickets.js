@@ -3,14 +3,16 @@ const Ticket = require("../models/Ticket_Model");
 const router = express.Router();
 
 // Get all Tickets
-router.get("/", async (req, res) => {
+router.get("/getAllTickets", async (req, res) => {
   try {
     const tickets = await Ticket.find();
     return res.status(200).json(tickets);
   } catch (err) {
-    return res.status(500).json({ error: err });
+    console.error('Error fetching tickets:', e);
+    return res.status(500).json({ message: e.message });
   }
 });
+
 
 // Get a Ticket by id
 router.get("/:id", async (req, res) => {
