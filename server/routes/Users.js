@@ -12,6 +12,9 @@ router.get("/", authorizationMiddleware(['manager', 'agent']), userController.ge
 // Login
 router.post("/login", authorizationMiddleware(['agent', 'user', 'manager']), userController.login);
 
+router.post("/register", authorizationMiddleware(['agent', 'user', 'manager']), userController.register);
+
+
 // Get one user
 router.get("/:id", authorizationMiddleware(['agent', 'manager']), userController.getUserById);
 

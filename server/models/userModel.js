@@ -17,16 +17,6 @@ const UserSchema = new mongoose.Schema({
     minLength: 1,
     maxLength: 30,
   },
-  is_Agent: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-  is_Manager: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
   Phone_Number: {
     type: String,
   },
@@ -38,7 +28,7 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    default: 'user', // Set default value to 'user'
+    enum: ['user','agent','manger'] // Set default value to 'user'
     }
 }, schemaOptions);
 

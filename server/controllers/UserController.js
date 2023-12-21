@@ -9,59 +9,102 @@ const secretKey = process.env.SECRET_KEY;
 const UserController = {
 
 
+  register: async (req, res) => {
+    try {
+      const { user_id, Email, password, Phone_Number, role } = req.body;
+  
+      // Validate user role
+      if (!['user', 'agent'].includes(role)) {
+        return res.status(400).json({ message: "Invalid user role" });
+      }
+  
+      const existingUser = await User.findOne({ Email });
+      if (existingUser) {
+        return res.status(409).json({ message: 'User already exists' });
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      const newUser = await User.create({
+        user_id,
+        Email,
+        password: hashedPassword,
+        Phone_Number,
+        role
+      });
+  
+      // Set req.user after successful registration
+      req.user = {
+        user_id: newUser.user_id,
+        role: newUser.role,
+        // Add any other relevant user information here
+      };
+  
+      // Generate JWT token after successful registration
+      const token = jwt.sign(
+        { user: req.user.user_id },
+        secretKey,
+        { expiresIn: '1h' }
+      );
+  
+      // Set token as cookie for future requests
+      res.cookie('token', token, { httpOnly: true });
+  
+      // Respond with user data and token
+      res.status(201).json({ user: newUser, token });
+    } catch (error) {
+      console.error('Error creating user:', error);
+      res.status(400).json({ message: error.message });
+    }
+  },
+
+
+ 
   login: async (req, res) => {
     try {
-      const { email, password } = req.body;
-      const user = await User.findOne({ Email: email });
+      const { Email, password } = req.body;
 
+      const user = await User.findOne({ Email });
       if (!user) {
-        return res.status(401).json({ error: 'Invalid credentials' });
+        return res.status(404).json({ message: 'Email not found' });
       }
-
-      const isManager = user.is_Manager;
-      const isAgent = user.is_Agent;
-      const isNormalUser = !(isManager || isAgent);
-
-      if (!isManager && !isAgent && !isNormalUser) {
-        return res.status(403).json({ error: 'Access forbidden' });
-      }
-
-      console.log("password: ", user.password);
-      // Check if the password is correct
 
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
-        return res.status(405).json({ message: "incorect password" });
+        return res.status(405).json({ message: 'Incorrect password' });
       }
 
       const currentDateTime = new Date();
       const expiresAt = new Date(+currentDateTime + 1800000); // expire in 3 minutes
-      // Generate a JWT token
+
       const token = jwt.sign(
         { user: { userId: user._id, role: user.role } },
-        secretKey,
+        's1234rf,.lp', // Replace with your actual secret key
         {
           expiresIn: 3 * 60 * 60,
         }
       );
+
       let newSession = new sessionModel({
         userId: user._id,
         token,
         expiresAt: expiresAt,
       });
+
       await newSession.save();
+
       return res
-        .cookie("token", token, {
+        .cookie('token', token, {
           expires: expiresAt,
           withCredentials: true,
           httpOnly: false,
-          SameSite:'none'
+          sameSite: 'none',
         })
         .status(200)
-        .json({ message: "login successfully", user });
+        .json({ message: 'Login successful', user });
     } catch (error) {
-      console.error("Error logging in:", error);
-      res.status(500).json({ message: "Server error" });
+      console.error('Error logging in:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   },
   createUser: async (req, res) => {
@@ -93,44 +136,43 @@ const UserController = {
       res.status(500).json({ error: error.message });
     }
   },
- 
-  getAllUsers: async (req, res) => {
+
+  createAdmin: async (req, res) => {
     try {
-      const users = await User.find();
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-  register: async (req, res) => {
-    //only a normal user is allowed to register
-    try {
-      const { user_id, Email, is_Agent, is_Manager, Phone_Number, Rate, password } = req.body;
+      const { user_id, Email, password, Phone_Number, role } = req.body;
+
       const existingUser = await User.findOne({ Email });
       if (existingUser) {
-        return res.status(409).json({ error: 'User already exists' });
+        return res.status(409).json({ message: 'User already exists' });
       }
-      if (!user_id || !Email) {
-        return res.status(400).json({ error: 'Incomplete data for user creation' });
-      }
-      const newUser = new User({
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newUser = await User.create({
         user_id,
         Email,
-        is_Agent: is_Agent || false,
-        is_Manager: is_Manager || false,
+        password: hashedPassword,
         Phone_Number,
-        Rate: Rate || 0,
-        password,
+        role,
       });
-      
 
-    
-      const savedUser = await newUser.save();
-      res.status(201).json(savedUser);
+      res.status(201).json(newUser);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.error('Error creating user:', error);
+      res.status(400).json({ message: error.message });
     }
   },
+ 
+  GetAllUsers: async (req, res) => {
+    try {
+      const users = await User.find();
+      return res.status(200).json(users);
+    } catch (e) {
+      console.error('Error fetching users:', e);
+      return res.status(500).json({ message: e.message });
+    }
+  },
+
   getUserById: async (req, res) => {
     try {
       const user = await User.findById(req.params.id);
@@ -157,28 +199,53 @@ const UserController = {
       res.status(500).json({ error: error.message });
     }
   },
-  updateUserById: async (req, res) => {
+  UpdateUser: async (req, res) => {
     try {
-      const { user_id, Email, is_Agent, is_Manager, Phone_Number, Rate } = req.body;
-
-      if (!user_id || !Email) {
-        return res.status(400).json({ error: 'Incomplete data for user update' });
-      }
+      const { Email, Phone_Number } = req.body;
 
       const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
-        { user_id, Email, is_Agent: is_Agent || false, is_Manager: is_Manager || false, Phone_Number, Rate: Rate || 0 },
+        { Email, Phone_Number },
         { new: true }
       );
+
       if (!updatedUser) {
         return res.status(404).json({ error: 'User not found' });
       }
-      res.status(200).json(updatedUser);
+
+      return res.status(200).json(updatedUser);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.error('Error updating user:', error);
+      return res.status(500).json({ error: error.message });
     }
   },
   
+  initializeAgentsFromDatabase: async (req, res) => {
+    try {
+      const agentDocs = await AgentModel.find({});
+      for (const agentDoc of agentDocs) {
+        const { category, maxCapacity, softwarePercentage, hardwarePercentage, networkPercentage } = agentDoc;
+        this.agents[category] = new Agent(category, maxCapacity, softwarePercentage, hardwarePercentage, networkPercentage);
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  } ,
+
+  isAgentAvailable: async (req, res) => {
+    try {
+      const { category } = req.body;
+      const agent = this.agents[category];
+      if (!agent) {
+        return res.status(404).json({ error: 'Agent not found' });
+      }
+      res.status(200).json({ isAvailable: agent.isAvailable() });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
  
 };
 module.exports = UserController;
+

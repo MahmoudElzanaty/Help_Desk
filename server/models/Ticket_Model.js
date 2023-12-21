@@ -13,7 +13,8 @@ const ticketSchema = new mongoose.Schema(
     },
     agent: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      ref: "Agents", // Reference the Agents model
+      required: false,
     },
 
     Category: {
@@ -35,27 +36,9 @@ const ticketSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    Status: {
-      type: String,
-      enum: ['open', 'closed', 'in progress'],
-        default: true,
-        required: true,
-      },
-      is_Open: {
-        type: Boolean,
-        required: true,
-        default: false,
-      },
-      is_Pending: {
-        type: Boolean,
-        required: true,
-        default: false,
-      },
-      is_Closed: {
-        type: Boolean,
-        required: true,
-        default: false,
-      },
+    Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' },
+
+      
     TDescribtion: {
       type: String,
       minLength: 3,
