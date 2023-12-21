@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const schemaOptions = {
   strict: false,
   timestamps: false,
@@ -6,31 +7,36 @@ const schemaOptions = {
 };
 
 const UserSchema = new mongoose.Schema({
-  user_id: {
+  name: {
     type: String,
     minLength: 3,
-    maxLength: 10,
+    maxLength: 30,
     required: true,
   },
   Email: {
     type: String,
     minLength: 1,
     maxLength: 30,
+    required: true,
   },
-  is_Agent: {
+  password: {
+    type: String,
+    required: true,
+  },
+  isAgent: {
     type: Boolean,
     required: true,
     default: false,
   },
-  is_Manager: {
+  isManager: {
     type: Boolean,
     required: true,
     default: false,
   },
-  Phone_Number: {
+  phoneNumber: {
     type: String,
   },
-  Rate: {
+  rate: {
     type: Number,
     required: false,
     default: 0,

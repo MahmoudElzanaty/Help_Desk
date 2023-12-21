@@ -13,9 +13,6 @@ router.get("/", async (req, res) => {
 });
 
 // Create a Report
-
-
-
 router.post("/", async (req, res) => {
   try {
     const newReport = await ReportsModel.create(req.body);

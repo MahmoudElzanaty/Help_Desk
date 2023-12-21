@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const FAQ = require("../Models/FAQModel");
+const FAQ = require("../models/FAQModel");
 
 // Get all FAQs
 router.get("/", async (req, res) => {
@@ -13,6 +13,27 @@ router.get("/", async (req, res) => {
   }
 });
 
+//Get by TDescribtion
+router.get("/", async (req, res) => {
+  const { Category, Sub_Category } = req.query;
+
+  try {
+    const searchText = `${Category} ${Sub_Category}`;
+
+    const searchResults = await FAQ.findOne({
+      $text: { $search: searchText },
+      status: true,
+    });
+
+    res.json(searchResults);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
+  
 // Create a new FAQ
 router.post("/", async (req, res) => {
   try {

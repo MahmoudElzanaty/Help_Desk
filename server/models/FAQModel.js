@@ -26,4 +26,6 @@ const FAQSchema = new mongoose.Schema({
   },
 }, schemaOptions);
 
+FAQSchema.index({ TDescribtion: 'text' });
+
 module.exports = mongoose.model('FAQ', FAQSchema);

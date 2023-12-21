@@ -3,18 +3,30 @@ const express = require("express");
 const cookieParser=require('cookie-parser')
 const app = express();
 const mongoose = require("mongoose");
-const ticketRouter = require("./routes/Tickets");
+const ticketRouter = require("./Routes/Tickets");
 const workflowRouter = require("./routes/Workflow");
 const userRouter = require("./routes/Users");
 const FAQ = require("./routes/FAQ");
 const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
+const Notification = require("./routes/Notifi");
+//
+const liveChatController = require('./controllers/liveChatController');
+app.use('/liveChat', liveChatController);
+//
+
+
 
 require('dotenv').config();
 
 //const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 //const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
 const cors = require("cors");
+
+
+
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/Tickets", ticketRouter);
@@ -23,6 +35,7 @@ app.use("/users", userRouter);
 app.use("/FAQ", FAQ);
 app.use("/Communication", Communication);
 app.use("/Reports", Reports);
+app.use("/Notifi", Notification);
 app.use(cookieParser())
 app.use(
   cors({
