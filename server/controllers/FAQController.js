@@ -1,11 +1,11 @@
-const bcrypt = require('bcryptjs'); // hat3ml require lel bcrypt
+  const bcrypt = require('bcryptjs'); // hat3ml require lel bcrypt
 const jwt = require('jsonwebtoken'); // hat3ml require lel jsonwebtoken
 const Communication = require('../models/CommunicationModel'); // hat3ml require lel communication model
 const FAQ = require('../models/FAQModel'); // hat3ml require lel FAQ model
 const Report = require('../models/ReportModel'); // hat3ml require lel Report model
-const Ticket = require('../models/Ticket_Model'); // hat3ml require lel Ticket model
-const User = require('../models/userModel'); // hat3ml require lel User model
-const Workflow = require('../models/Workflow_Model'); // hat3ml require lel Workflow model
+const Ticket = require('../models/Ticket_Model'); 
+const User = require('../models/userModel'); 
+const Workflow = require('../models/Workflow_Model'); 
 
 
 exports.createFAQ = async (req, res) => {

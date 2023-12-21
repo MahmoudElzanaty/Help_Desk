@@ -137,31 +137,39 @@ const UserController = {
     }
   },
 
-  createAdmin: async (req, res) => {
+  makeAdmin: async (req, res) => {
     try {
-      const { user_id, Email, password, Phone_Number, role } = req.body;
-
-      const existingUser = await User.findOne({ Email });
-      if (existingUser) {
-        return res.status(409).json({ message: 'User already exists' });
+      // Check if the current logged-in user is a manager
+      const loggedInUser = req.user; // Assuming you set the user in the middleware
+      if (!loggedInUser || loggedInUser.role !== 'manager') {
+        return res.status(403).json({ error: 'Access forbidden. Only managers can make users admin.' });
       }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      const newUser = await User.create({
-        user_id,
-        Email,
-        password: hashedPassword,
-        Phone_Number,
-        role,
-      });
-
-      res.status(201).json(newUser);
+  
+      // Get the email of the user to be made admin from the request body
+      const { userEmailToMakeAdmin } = req.body;
+  
+      // Find the user in the database by email
+      const userToMakeAdmin = await User.findOne({ Email: userEmailToMakeAdmin });
+  
+      // Check if the user exists
+      if (!userToMakeAdmin) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Change the user's role to admin
+      userToMakeAdmin.role = 'admin';
+  
+      // Save the updated user in the database
+      const updatedUser = await userToMakeAdmin.save();
+  
+      // Respond with the updated user
+      res.status(200).json({ message: 'User role updated to admin', user: updatedUser });
     } catch (error) {
-      console.error('Error creating user:', error);
-      res.status(400).json({ message: error.message });
+      console.error('Error making admin:', error);
+      res.status(500).json({ error: 'Server error' });
     }
   },
+  
  
   GetAllUsers: async (req, res) => {
     try {
