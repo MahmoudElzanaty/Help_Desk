@@ -24,16 +24,18 @@ const FAQSchema = new mongoose.Schema({
     min: 1,
     required: true,
   },
+  Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' },
+
+    
+  
   Category: {
     type: String,
-    minLength: 3,
-    maxLength: 30,
+    enum: ['Hardware', 'Software', 'Network'],
     required: true,
   },
   Sub_Category: {
     type: String,
-    minLength: 3,
-    maxLength: 30,
+    enum:['Desktops', 'Laptops', 'Printers', 'Servers', 'Networking equipment','Operating system', 'Application software', 'Custom software', 'Integration issues','Email issues', 'Internet connection problems', 'Website errors'],
     required: true,
   },
 }, schemaOptions);

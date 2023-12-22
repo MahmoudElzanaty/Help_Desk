@@ -21,13 +21,12 @@ getById: async (req, res) => {
   }
 },
 
-
-
 // Get FAQs based on Category and Sub_Category
-GetBySearch: async (req, res) => {
+ GetBySearch: async (req, res) => {
   const { Category, Sub_Category } = req.query;
 
   try {
+    
     const faqs = await FAQ.find({
       Category: Category,
       Sub_Category: Sub_Category,
@@ -45,28 +44,58 @@ GetBySearch: async (req, res) => {
 },
 
 
+
+
+
 // Create a new FAQ
-CreateFAQ: async (req, res) => {
+createFAQ: async (req, res) => {
   try {
-    const newFAQ = await FAQ.create(req.body);
-    return res.status(201).json(newFAQ);
+    const {
+      tickets,
+      status,
+      TDescribtion,
+      FAQ_ID,
+      Status,
+      Category,
+      Sub_Category
+    } = req.body;
+
+    // Validate that required fields are present
+    if (!tickets || !FAQ_ID || !Category || !Sub_Category) {
+      return res.status(400).json({ error: 'Incomplete data for FAQ creation' });
+    }
+
+    const newFAQ = new FAQ({
+      tickets,
+      status: status || true,
+      TDescribtion,
+      FAQ_ID,
+      Status: Status || 'open',
+      Category,
+      Sub_Category
+    });
+
+    const savedFAQ = await newFAQ.save();
+    return res.status(201).json(savedFAQ);
   } catch (error) {
-    console.error("Error creating FAQ:", error.message);
-    return res.status(400).json({ message: "Bad Request" });
+    console.error('Error creating FAQ:', error.message);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 },
 
 // Delete an FAQ
-DeleteFAQ: async (req, res) => {
+deleteFAQById : async (req, res) => {
   try {
     const deletedFAQ = await FAQ.findByIdAndDelete(req.params.id);
+
     if (!deletedFAQ) {
-      return res.status(404).json({ message: "FAQ not found" });
+      return res.status(404).json({ error: 'FAQ not found' });
     }
-    return res.status(200).json(deletedFAQ);
+
+    return res.status(200).json({ message: 'FAQ deleted successfully' });
   } catch (error) {
-    console.error("Error deleting FAQ:", error.message);
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.error('Error deleting FAQ:', error.message);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 },
 };
