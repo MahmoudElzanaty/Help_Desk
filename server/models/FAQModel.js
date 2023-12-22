@@ -24,6 +24,18 @@ const FAQSchema = new mongoose.Schema({
     min: 1,
     required: true,
   },
+  Category: {
+    type: String,
+    minLength: 3,
+    maxLength: 30,
+    required: true,
+  },
+  Sub_Category: {
+    type: String,
+    minLength: 3,
+    maxLength: 30,
+    required: true,
+  },
 }, schemaOptions);
 
 module.exports = mongoose.model('FAQ', FAQSchema);

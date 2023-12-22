@@ -10,22 +10,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     minLength: 3,
     maxLength: 10,
-    required: true,
+    required: false,
   },
   Email: {
     type: String,
     minLength: 1,
     maxLength: 30,
-  },
-  is_Agent: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-  is_Manager: {
-    type: Boolean,
-    required: true,
-    default: false,
   },
   Phone_Number: {
     type: String,
@@ -35,6 +25,11 @@ const UserSchema = new mongoose.Schema({
     required: false,
     default: 0,
   },
+  role: {
+    type: String,
+    required: true,
+    enum: ['user','agent','manger'] // Set default value to 'user'
+    }
 }, schemaOptions);
 
 // Use UserSchema as the model for the "Users" collection

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const schemaOptions = {
   strict: false,
-  timestamps: false,
+  timestamps: true,
 };
 
 const ticketSchema = new mongoose.Schema(
@@ -13,41 +13,43 @@ const ticketSchema = new mongoose.Schema(
     },
     agent: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      ref: "Agents", // Reference the Agents model
+      required: false,
     },
 
     Category: {
       type: String,
-      minLength: 3,
-      maxLength: 30,
+      enum: ['Hardware', 'Software', 'Network'],
       required: true,
     },
     Sub_Category: {
       type: String,
-      minLength: 3,
-      maxLength: 30,
+      enum:['Desktops', 'Laptops', 'Printers', 'Servers', 'Networking equipment','Operating system', 'Application software', 'Custom software', 'Integration issues','Email issues', 'Internet connection problems', 'Website errors'],
       required: true,
     },
     Priority: {
       type: String,
-      minLength: 3,
-      maxLength: 30,
+      enum: ['High', 'Medium', 'Low'],
       required: true,
     },
     Date: {
       type: Date,
-      required: true,
+      required: false,
     },
-    Status: {
-      type: Boolean,
-      default: true,
-      required: true,
-    },
+    Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' },
+
+      
     TDescribtion: {
       type: String,
       minLength: 3,
       maxLength: 1000,
       required: true,
+    },
+
+    userRate: {
+      type: Number,
+      required: false,
+      default: 0,
     },
   },
   schemaOptions);
