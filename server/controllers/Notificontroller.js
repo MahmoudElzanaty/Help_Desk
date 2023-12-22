@@ -75,7 +75,30 @@ const changeTicketStatus = async (req, res) => {
   }
 };
 
+//Integrated messaging system
+const sendEmailToUser = async (req, res) => {
+  try {
+    const { userEmail, description } = req.body;
+    const user = await UserModel.findOne({ Email: userEmail });
+
+    if (user) {
+      const subject = 'Message from Admin';
+      const text = `Dear ${user.name},\n\n${description}\n\nBest regards,\nAdmin`;
+
+      await sendEmail(user.Email, subject, text);
+      res.status(200).json({ message: 'Email sent successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error sending email to user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
 module.exports = {
   submitTicket,
   changeTicketStatus,
+  sendEmailToUser,
 };

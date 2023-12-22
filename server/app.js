@@ -11,8 +11,37 @@ const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
 const Notification = require("./routes/Notifi");
 //
-const liveChatController = require('./controllers/liveChatController');
-app.use('/liveChat', liveChatController);
+const ChatMessage = require("./models/messageModel");
+const socketio = require("socket.io");
+const server = require("http").createServer(app);
+const io = socketio(server);
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("chat message", async (newMessage) => {
+    try {
+      const { sender, receiver, message } = newMessage;
+
+      // Save the chat message to the database
+      const chatMessage = new ChatMessage({
+        sender,
+        receiver,
+        message,
+      });
+      await chatMessage.save();
+
+      // Emit the chat message to the sender and receiver
+      socket.emit("chat message", chatMessage);
+      socket.to(receiver).emit("chat message", chatMessage);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
 //
 
 
