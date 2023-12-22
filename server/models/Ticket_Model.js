@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const schemaOptions = {
   strict: false,
-  timestamps: false,
+  timestamps: true,
 };
 
 const ticketSchema = new mongoose.Schema(
@@ -34,7 +34,7 @@ const ticketSchema = new mongoose.Schema(
     },
     Date: {
       type: Date,
-      required: true,
+      required: false,
     },
     Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' },
 
@@ -44,6 +44,12 @@ const ticketSchema = new mongoose.Schema(
       minLength: 3,
       maxLength: 1000,
       required: true,
+    },
+
+    userRate: {
+      type: Number,
+      required: false,
+      default: 0,
     },
   },
   schemaOptions);

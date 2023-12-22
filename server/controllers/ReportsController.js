@@ -1,82 +1,142 @@
-const bcrypt = require('bcryptjs'); // hat3ml require lel bcrypt
-const jwt = require('jsonwebtoken'); // hat3ml require lel jsonwebtoken
-const Communication = require('../models/CommunicationModel'); // hat3ml require lel communication model
-const FAQ = require('../models/FAQModel'); // hat3ml require lel FAQ model
-const Report = require('../models/ReportModel'); // hat3ml require lel Report model
-const Ticket = require('../models/Ticket_Model'); // hat3ml require lel Ticket model
-const User = require('../models/userModel'); // hat3ml require lel User model
-const Workflow = require('../models/Workflow_Model'); // hat3ml require lel Workflow model
+const ReportsModel = require("../models/ReportsModel"); // Importing the ReportsModel
+const ticket = require("../models/Ticket_Model");
 
-exports.createReport = async (req, res) => {
+const reportController = {
+
+    getAllReports: async (req, res) => {
+        try {
+          const reports = await ReportsModel.find();
+          return res.status(200).json(reports);
+        } catch (err) {
+          return res.status(500).json({ error: err });
+        }
+      },
+      createReport: async (req, res) => {
+        try {
+          const newReport = await ReportsModel.create(req.body);
+          return res.status(201).json(newReport);
+        } catch (e) {
+          console.error("Error creating Report:", e);
+          return res.status(400).json({ message: e.message });
+        }
+      },
+      //Delete a Report
+deleteReport: async (req, res) => {
     try {
-      const { tickets, agent, Tstatus, R_data } = req.body; 
-      if (!tickets || !agent || !R_data) {
-        return res.status(400).json({ error: 'Incomplete data for report creation' });
+      const report = await ReportsModel.findByIdAndDelete(req.params.id);
+      return res.status(200).json({ report, msg: "deleted" });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  },
+
+  
+ 
+  getGenearteReport: async (req, res) => {
+    try {
+        function calculateResolutionTime(createdAt, updatedAt) {
+            const createdDate = new Date(createdAt);
+            const updatedDate = new Date(updatedAt);
+          
+            // Calculate the time difference in milliseconds
+            const resolutionTimeMs = updatedDate - createdDate;
+          
+            // Convert milliseconds to seconds
+            const resolutionTimeSec = resolutionTimeMs / 1000;
+          
+            return resolutionTimeSec;
+          }
+
+          
+      const tickets = await ticket.findById(req.params.id);
+      const resolutionTime = await calculateResolutionTime(tickets.createdAt, tickets.updatedAt);
+      const ticketStatus = await tickets.Status;
+
+      const ratings = await tickets.userRate;
+
+      if (!tickets) {
+        return res.status(404).json({ error: 'Ticket not found' });
       }
-      const newReport = new Report({ tickets, agent,Tstatus: Tstatus || true, R_data,
+  
+      if (tickets.Status === 'closed') {
+        // Calculate resolution time based on createdAt and updatedAt
+   
+        // Calculate average rating of the agent
+  
+        return res.status(200).json({ resolutionTime, tickets,ticketStatus,ratings });
+      } else {
+        return res.status(404).json({ error: 'The ticket is not closed yet' });
+      }
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  },
+  getReportById: async (req, res) => {
+    try {
+      const reportModel = await ReportsModel.findById(req.params.id);
+      return res.status(200).json(reportModel);
+    } catch (err) {
+      return res.status(500).json({ error: err });
+    }
+  },
+  
+getAnalytics: async (req, res) => {
+    try {
+
+               
+async function calculateAverageAgentRating() {
+  try {
+    // Get distinct agents from the collection
+    const agents = await ticket.distinct('agent');
+
+    // Calculate average rating for each agent
+    const averageRatings = await Promise.all(
+      agents.map(async (agentId) => {
+        // Find all closed tickets for the agent with user ratings
+        const tickets = await ticket.find({
+          agent: agentId,
+          Status: 'closed',
+          userRate: { $exists: true }
+        }).select('userRate');
+
+        if (tickets.length === 0) {
+          return { agentId, averageRating: 0 }; // Default if no ratings are found
+        }
+
+        // Calculate average rating
+        const totalRating = tickets.reduce((sum, ticket) => sum + ticket.userRate, 0);
+        const averageRating = totalRating / tickets.length;
+
+        return { agentId, averageRating };
+      })
+    );
+
+    return averageRatings;
+  } catch (error) {
+    console.error('Error calculating average agent ratings:', error);
+    throw error;
+  }
+}
+      const totalTickets = await ticket.countDocuments();
+      const openTickets = await ticket.countDocuments({ Status: 'open' });
+      const closedTickets = await ticket.countDocuments({ Status: 'closed' });
+      const progressTickets = await ticket.countDocuments({ Status: 'in progress' });
+  
+      const avgRate = await calculateAverageAgentRating();
+  
+      // Return the analytics data as JSON
+      return res.status(200).json({
+        totalTickets,
+        openTickets,
+        closedTickets,
+        progressTickets,
+        avgRate,
       });
-      const savedReport = await newReport.save();
-      res.status(201).json(savedReport);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.error('Error fetching analytics data:', error);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
-  };
-  
-  exports.getAllReports = async (req, res) => {
-    try {
-      const reports = await Report.find();
-      res.status(200).json(reports);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
-  
-  exports.getReportById = async (req, res) => {
-    try {
-      const report = await Report.findById(req.params.id);
-      
-      if (!report) {
-        return res.status(404).json({ error: 'Report not found' });
-      }
-  
-      res.status(200).json(report);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
-  
-  exports.updateReportById = async (req, res) => {
-    try {
-      const { tickets, agent, Tstatus, R_data } = req.body;
-  
-      if (!tickets || !agent || !R_data) {
-        return res.status(400).json({ error: 'Incomplete data for report update' });
-      }
-      const updatedReport = await Report.findByIdAndUpdate(
-        req.params.id,
-        { tickets, agent, Tstatus: Tstatus || true, R_data },
-        { new: true } // Return the updated document
-      );
-      if (!updatedReport) {
-        return res.status(404).json({ error: 'Report not found' });
-      }
-      res.status(200).json(updatedReport);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
-  
-  exports.deleteReportById = async (req, res) => {
-    try {
-      const deletedReport = await Report.findByIdAndDelete(req.params.id);
-  
-      if (!deletedReport) {
-        return res.status(404).json({ error: 'Report not found' });
-      }
-  
-      res.status(200).json({ message: 'Report deleted successfully' });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
-  
+  },
+
+};
+module.exports = reportController;
