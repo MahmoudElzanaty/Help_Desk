@@ -1,7 +1,8 @@
 const express = require("express");
-//const jwt = require("jsonwebtoken");
 const path = require('path');
-const cookieParser=require('cookie-parser')
+const jwt = require("jsonwebtoken");
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require("mongoose");
 const ticketRouter = require("./routes/Tickets");
@@ -10,28 +11,20 @@ const userRouter = require("./routes/Users");
 const FAQ = require("./routes/FAQ");
 const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
-const Login = require("./routes/login");
 
-
+const authRouter = require("./routes/auth");
 
 require('dotenv').config();
 
-//const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
-//const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
-
-
-
+const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
+const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
 
 const cors = require("cors");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use("/Tickets", ticketRouter);
-app.use("/Workflow", workflowRouter);
-app.use("/users", userRouter);
-app.use("/FAQ", FAQ);
-app.use("/Communication", Communication);
-app.use("/Reports", Reports);
-app.use("/login", Login);
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(
   cors({
@@ -40,6 +33,23 @@ app.use(
     credentials: true,
   })
 );
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
+app.use("/api/v1", authRouter);
+//app.use(authenticationMiddleware);
+app.use("/Tickets", authenticationMiddleware, ticketRouter);
+app.use("/Workflow", authenticationMiddleware, workflowRouter);
+app.use("/users", authenticationMiddleware, userRouter);
+app.use("/FAQ", authenticationMiddleware, FAQ);
+app.use("/Communication", authenticationMiddleware, Communication);
+app.use("/Reports", authenticationMiddleware, Reports);
+app.use("/api/v1/users", authenticationMiddleware, userRouter);
+
 
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -51,9 +61,6 @@ app.use(
 
 //   next();
 // });
-
-//app.use(authenticationMiddleware);
-//app.use(authorizatonMiddleware);
 
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build')));
 
@@ -69,6 +76,7 @@ app.use((req, res, next) => {
     res.sendFile(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build', 'index.html'));
   }
 });
+
 
 
 const db_name = process.env.DB_NAME;
@@ -92,3 +100,5 @@ app.use(function (req, res, next) {
   return res.status(404).send("404");
 });
 app.listen(process.env.PORT, () => console.log("server started"));
+
+

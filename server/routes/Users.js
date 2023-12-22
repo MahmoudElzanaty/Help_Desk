@@ -1,28 +1,31 @@
 const express = require("express");
 const router = express.Router();
-const Users = require("../models/userModel");
+const userController = require("../controllers/UserController");
+const authorizationMiddleware = require('../Middleware/authorizationMiddleware');
+
+
+
+router.post("/register", userController.register);
+
+// Create user
+router.post("/", authorizationMiddleware(['agent', 'user', 'manager']), userController.createUser);
 
 // Get all users
-router.get("/", async (req, res) => {
-  try {
-    const users = await Users.find();
-    return res.status(200).json(users);
-  } catch (e) {
-    console.error("Error fetching users:", e);
-    //print 
-    return res.status(500).json({ message: e.message });
-  }
-});
+router.get("/", authorizationMiddleware(['manager', 'agent']), userController.GetAllUsers);
 
-// Create a new user
-router.post("/", async (req, res) => {
-  try {
-    const newUser = await Users.create(req.body);
-    return res.status(201).json(newUser);
-  } catch (e) {
-    console.error("Error creating user:", e);
-    return res.status(400).json({ message: e.message });
-  }
-});
+// Login
+router.post("/login", authorizationMiddleware(['agent', 'user', 'manager']), userController.login);
+
+
+
+
+// Get one user
+router.get("/:id", authorizationMiddleware(['agent', 'manager']), userController.getUserById);
+
+// Update one user
+router.put("/:id", authorizationMiddleware(['manager', 'agent']), userController.UpdateUser);
+
+// Delete one user
+router.delete("/:id", authorizationMiddleware(['manager']), userController.deleteUserById);
 
 module.exports = router;

@@ -1,11 +1,11 @@
-import '../App.css';
 import React, { useState } from 'react';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
-    email: '',
+    Email: '',
     password: '',
-    phoneNumber: '',
+    Phone_Number: '',
+    role: 'user',
   });
 
   const [registrationStatus, setRegistrationStatus] = useState(null);
@@ -21,18 +21,22 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/Users/', {
+      const response = await fetch('http://localhost:3000/api/v1/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        credentials: 'include', 
       });
+
+      const data = await response.json();
 
       if (response.ok) {
         setRegistrationStatus('Registration successful');
       } else {
-        setRegistrationStatus('Registration failed');
+        console.error('Error response:', data); // Log the error response
+        setRegistrationStatus(`Registration failed: ${data.message}`);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -48,8 +52,8 @@ const RegistrationForm = () => {
           Email:
           <input
             type="email"
-            name="email"
-            value={formData.email}
+            name="Email"
+            value={formData.Email}
             onChange={handleChange}
           />
         </label>
@@ -71,12 +75,15 @@ const RegistrationForm = () => {
         <label>
           Phone Number:
           <input
-            type="number"
-            name="phoneNumber"
-            value={formData.phoneNumber}
+            type="text"
+            name="Phone_Number"
+            value={formData.Phone_Number}
             onChange={handleChange}
           />
         </label>
+
+        <br />
+
 
         <button type="submit">Register</button>
       </form>

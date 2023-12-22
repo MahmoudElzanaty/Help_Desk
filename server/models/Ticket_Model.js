@@ -8,59 +8,42 @@ const ticketSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      required: false,
+      required: true,
       ref: "Users", // Reference the Users model
     },
     agent: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "Agents", // Reference the Agents model
       required: false,
     },
 
     Category: {
       type: String,
       enum: ['Hardware', 'Software', 'Network'],
-      required: false,
+      required: true,
     },
     Sub_Category: {
       type: String,
       enum:['Desktops', 'Laptops', 'Printers', 'Servers', 'Networking equipment','Operating system', 'Application software', 'Custom software', 'Integration issues','Email issues', 'Internet connection problems', 'Website errors'],
-      required: false,
+      required: true,
     },
     Priority: {
       type: String,
       enum: ['High', 'Medium', 'Low'],
-      required: false,
+      required: true,
     },
     Date: {
       type: Date,
-      required: false,
+      required: true,
     },
-    Status: {
-      type: String,
-      enum: ['open', 'closed', 'in progress'],
-        default: 'open',
-        required: false,
-      },
-      is_Open: {
-        type: Boolean,
-        required: false,
-        default: true,
-      },
-      is_Pending: {
-        type: Boolean,
-        required: false,
-        default: false,
-      },
-      is_Closed: {
-        type: Boolean,
-        required: false,
-        default: false,
-      },
+    Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' },
+
+      
     TDescribtion: {
       type: String,
       minLength: 3,
       maxLength: 1000,
-      required: false,
+      required: true,
     },
   },
   schemaOptions);
