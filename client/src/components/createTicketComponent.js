@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 
 const TicketForm = () => {
   const [ticketData, setTicketData] = useState({
-    category: '',
-    subcategory: '',
-    description: '',
+    Category: '',
+    Sub_Category: '',
+    TDescription: '',
   });
 
   const [ticketMessage, setTicketMessage] = useState('');
@@ -22,7 +22,7 @@ const TicketForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/Tickets/', {
+      const response = await fetch('http://localhost:3000/Tickets/createTicket', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,15 +55,15 @@ const TicketForm = () => {
         <label>
           Category:
           <select
-            name="category"
-            value={ticketData.category}
+            name="Category"
+            value={ticketData.Category}
             onChange={handleChange}
             required
           >
             <option value="" disabled>Select a category</option>
-            {categoryOptions.map((category) => (
-              <option key={category} value={category}>
-                {category}
+            {categoryOptions.map((Category) => (
+              <option key={Category} value={Category}>
+                {Category}
               </option>
             ))}
           </select>
@@ -74,16 +74,16 @@ const TicketForm = () => {
         <label>
           Subcategory:
           <select
-            name="subcategory"
-            value={ticketData.subcategory}
+            name="Sub_Category"
+            value={ticketData.Sub_Category}
             onChange={handleChange}
             required
           >
             <option value="" disabled>Select a subcategory</option>
-            {ticketData.category &&
-              subcategoryOptions[ticketData.category].map((subcategory) => (
-                <option key={subcategory} value={subcategory}>
-                  {subcategory}
+            {ticketData.Category &&
+              subcategoryOptions[ticketData.Category].map((Sub_Category) => (
+                <option key={Sub_Category} value={Sub_Category}>
+                  {Sub_Category}
                 </option>
               ))}
           </select>
@@ -94,8 +94,8 @@ const TicketForm = () => {
         <label>
           Description:
           <textarea
-            name="description"
-            value={ticketData.description}
+            name="TDescribtion"
+            value={ticketData.TDescribtion}
             onChange={handleChange}
             required
           />
