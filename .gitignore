@@ -9,6 +9,10 @@
 
 # production
 /build
+/dist
+/ .npmignore
+.npmrc
+
 
 # misc
 .DS_Store

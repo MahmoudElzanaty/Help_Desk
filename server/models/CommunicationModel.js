@@ -5,26 +5,21 @@ const schemaOptions = {
 };
 
 const CommunicationSchema = new mongoose.Schema({
-  user: {
+  users: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+
+  isAgent: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+
+  latestMessage: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "users", 
+    ref: "Message",
   },
-  agent: {
-    type: mongoose.Schema.Types.ObjectId,
-    min: 1,
-    required: true,
-  },
-  Describtion: {
-    type: String,
-    minLength: 3,
-    maxLength: 1000,
-  },
-  Message_Id: {
+
+  Message: {  
     type: String,
     minLength: 3,
     maxLength: 30,
   },
 }, schemaOptions);
+
 
 module.exports = mongoose.model('Communication', CommunicationSchema);

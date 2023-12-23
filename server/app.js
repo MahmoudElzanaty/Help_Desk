@@ -12,6 +12,39 @@ const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
 
 const authRouter = require("./routes/auth");
+const Notification = require("./routes/Notifi");
+//
+const ChatMessage = require("./models/messageModel");
+const socketio = require("socket.io");
+const server = require("http").createServer(app);
+const io = socketio(server);
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("chat message", async (newMessage) => {
+    try {
+      const { sender, receiver, message } = newMessage;
+
+      // Save the chat message to the database
+      const chatMessage = new ChatMessage({
+        sender,
+        receiver,
+        message,
+      });
+      await chatMessage.save();
+
+      // Emit the chat message to the sender and receiver
+      socket.emit("chat message", chatMessage);
+      socket.to(receiver).emit("chat message", chatMessage);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
 
 require('dotenv').config();
 
@@ -41,6 +74,7 @@ app.use("/users", userRouter);
 app.use("/FAQ", FAQ);
 app.use("/Communication", Communication);
 app.use("/Reports", Reports);
+app.use("/Notifi", Notification);
 app.use("/api/v1/users", userRouter);
 
 
