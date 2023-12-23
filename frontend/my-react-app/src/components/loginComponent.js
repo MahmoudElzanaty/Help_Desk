@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
-    email: '',
+    Email: '',
     password: '',
   });
   
@@ -22,12 +22,13 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/login/login', {
+      const response = await fetch('http://localhost:3000/api/v1/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        credentials: 'include', 
       });
 
       if (response.ok) {
@@ -49,8 +50,8 @@ const LoginForm = () => {
           Email:
           <input
             type="email"
-            name="email"
-            value={formData.email}
+            name="Email"
+            value={formData.Email}
             onChange={handleChange}
           />
         </label>
