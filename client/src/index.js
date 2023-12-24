@@ -1,16 +1,17 @@
-// index.js
-
 import React from 'react';
-import ReactDOM from 'react-dom';
-import LoginForm from './components/loginComponent';
+import ReactDOM from 'react-dom'; // Fix the import statement
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-const App = () => {
-  return (
-    <div>
-      <h1>Help_Desk</h1>
-      <LoginForm />
-    </div>
-  );
-};
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
