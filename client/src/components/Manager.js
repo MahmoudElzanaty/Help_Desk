@@ -3,13 +3,15 @@
 
 import React from 'react';
 
-const AdminDashboard = () => {
+const Manager = () => {
     return (
         <div>
-        <h1>Hello admin</h1>
+        <h1>Hello manager</h1>
         </div>
     );
     }
 
 
-    export default AdminDashboard;
+    export default Manager;
+
+    

@@ -3,13 +3,13 @@
 
 import React from 'react';
 
-const CustomerDashboard = () => {
+const Agent = () => {
     return (
         <div>
-        <h1>Hello Customer</h1>
+        <h1>Hello Agent</h1>
         </div>
     );
     }
 
 
-    export default CustomerDashboard;
+    export default Agent;

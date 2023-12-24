@@ -1,5 +1,7 @@
+// Import necessary modules
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './registerComponent.css'; // Import your CSS file for specific styling
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -57,9 +59,9 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div>
+    <div className="registration-form-container">
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="registration-form">
         <label>
           Email:
           <input
@@ -69,8 +71,6 @@ const RegistrationForm = () => {
             onChange={handleChange}
           />
         </label>
-
-        <br />
 
         <label>
           Password:
@@ -82,8 +82,6 @@ const RegistrationForm = () => {
           />
         </label>
 
-        <br />
-
         <label>
           Phone Number:
           <input
@@ -94,12 +92,10 @@ const RegistrationForm = () => {
           />
         </label>
 
-        <br />
-
         <button type="submit">Register</button>
       </form>
 
-      {registrationStatus && <p>{registrationStatus}</p>}
+      {registrationStatus && <p className="registration-status">{registrationStatus}</p>}
     </div>
   );
 };

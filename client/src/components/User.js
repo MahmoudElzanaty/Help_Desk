@@ -3,13 +3,13 @@
 
 import React from 'react';
 
-const ManagerDashboard = () => {
+const User = () => {
     return (
         <div>
-        <h1>Hello manager</h1>
+        <h1>Hello User</h1>
         </div>
     );
     }
 
 
-    export default ManagerDashboard;
+    export default User;
