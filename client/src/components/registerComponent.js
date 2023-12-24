@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RegistrationForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     Email: '',
     password: '',
@@ -27,15 +30,24 @@ const RegistrationForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        credentials: 'include', 
+        credentials: 'include',
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setRegistrationStatus('Registration successful');
+
+        // Use setTimeout inside a useEffect to handle component unmounting
+        const timer = setTimeout(() => {
+          // Redirect to the login page after 1 second
+          navigate('/login');
+        }, 1000);
+
+        // Clear the timer if the component unmounts before the delay
+        return () => clearTimeout(timer);
       } else {
-        console.error('Error response:', data); // Log the error response
+        console.error('Error response:', data);
         setRegistrationStatus(`Registration failed: ${data.message}`);
       }
     } catch (error) {
@@ -83,7 +95,6 @@ const RegistrationForm = () => {
         </label>
 
         <br />
-
 
         <button type="submit">Register</button>
       </form>
