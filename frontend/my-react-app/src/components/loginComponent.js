@@ -1,13 +1,13 @@
-import '../App.css';
+// Import necessary modules
 import React, { useState } from 'react';
+import Cookies from 'js-cookie';
+import './loginComponent.css'; // Import your CSS file for specific styling
 
-
-const LoginForm = () => {
+const LoginForm = ({ handleLogin }) => {
   const [formData, setFormData] = useState({
     Email: '',
     password: '',
   });
-  
 
   const [loginMessage, setLoginMessage] = useState('');
 
@@ -22,30 +22,50 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/v1/users/login', {
+      const response = await fetch('http://localhost:3000/api/v1/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        credentials: 'include', 
+        credentials: 'include',
       });
-
+  
       if (response.ok) {
-        setLoginMessage('Login successful');
+        const responseData = await response.json();
+        const role = responseData.user.role;
+        const token = responseData.token; // Extract the token from the response
+  
+        // Store user_id and token
+        Cookies.set('user_id', responseData.user.user_id, {
+          expires: 3 / 1440,
+          sameSite: 'none',
+          secure: true,
+        });
+  
+        // Store the token securely (consider HttpOnly cookies or localStorage)
+        Cookies.set('token', token, {
+          expires: 3 / 1440,
+          sameSite: 'none',
+          secure: true,
+        });
+  
+        localStorage.setItem('loginMessage', JSON.stringify(responseData));
+        setLoginMessage(`Login successful. User role: ${role}`);
+        handleLogin(role);
       } else {
         setLoginMessage('Login failed. Please check your email and password.');
       }
     } catch (error) {
       console.error('Error:', error);
-      setLoginMessage('An error occurred during login. Please try again.');
+      setLoginMessage('An error occurred during login.');
     }
   };
 
   return (
-    <div>
+    <div className="login-form-container">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-form">
         <label>
           Email:
           <input
@@ -55,8 +75,6 @@ const LoginForm = () => {
             onChange={handleChange}
           />
         </label>
-
-        <br />
 
         <label>
           Password:
@@ -71,7 +89,7 @@ const LoginForm = () => {
         <button type="submit">Login</button>
       </form>
 
-      {loginMessage && <p>{loginMessage}</p>}
+      {loginMessage && <p className="login-message">{loginMessage}</p>}
     </div>
   );
 };

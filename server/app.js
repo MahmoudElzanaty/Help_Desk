@@ -1,7 +1,6 @@
 const express = require("express");
-const path = require('path');
 const jwt = require("jsonwebtoken");
-const cookieParser = require('cookie-parser')
+const cookieParser=require('cookie-parser')
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require("mongoose");
@@ -13,6 +12,39 @@ const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
 
 const authRouter = require("./routes/auth");
+const Notification = require("./routes/Notifi");
+//
+const ChatMessage = require("./models/messageModel");
+const socketio = require("socket.io");
+const server = require("http").createServer(app);
+const io = socketio(server);
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("chat message", async (newMessage) => {
+    try {
+      const { sender, receiver, message } = newMessage;
+
+      // Save the chat message to the database
+      const chatMessage = new ChatMessage({
+        sender,
+        receiver,
+        message,
+      });
+      await chatMessage.save();
+
+      // Emit the chat message to the sender and receiver
+      socket.emit("chat message", chatMessage);
+      socket.to(receiver).emit("chat message", chatMessage);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
 
 require('dotenv').config();
 
@@ -28,54 +60,39 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: [process.env.ORIGIN, 'http://localhost:3001'] ,// Add 'http://localhost:3001' to the list of allowed origins
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })
 );
 
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  credentials: true,
-};
-app.use(cors(corsOptions));
 
 app.use("/api/v1", authRouter);
-//app.use(authenticationMiddleware);
-app.use("/Tickets", authenticationMiddleware, ticketRouter);
-app.use("/Workflow", authenticationMiddleware, workflowRouter);
-app.use("/users", authenticationMiddleware, userRouter);
-app.use("/FAQ", authenticationMiddleware, FAQ);
-app.use("/Communication", authenticationMiddleware, Communication);
-app.use("/Reports", authenticationMiddleware, Reports);
-app.use("/api/v1/users", authenticationMiddleware, userRouter);
+app.use("/Tickets", ticketRouter);
+app.use(authenticationMiddleware);
+//app.use("/Tickets", ticketRouter);
+app.use("/Workflow", workflowRouter);
+app.use("/users", userRouter);
+app.use("/FAQ", FAQ);
+app.use("/Communication", Communication);
+app.use("/Reports", Reports);
+app.use("/Notifi", Notification);
+app.use("/api/v1/users", userRouter);
 
 
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS,HEAD");
-//   res.setHeader(
-//     "Access-Control-Expose-Headers",
-//     "*"
-//   );
+ app.use((req, res, next) => {
+   res.setHeader("Access-Control-Allow-Origin", "*");
+   res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS,HEAD");
+   res.setHeader(
+     "Access-Control-Expose-Headers",
+     "*" 
 
-//   next();
-// });
+   );
 
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build')));
-
-const excludeRoutes = ['/getAllTickets'];
-
-// Middleware to serve 'index.html' only for specified routes
-app.use((req, res, next) => {
-  if (excludeRoutes.some(route => req.path.startsWith(route))) {
-    // Skip serving 'index.html' for specified routes
-    next();
-  } else {
-    // Serve 'index.html' for all other routes
-    res.sendFile(path.join(__dirname, '..', 'frontend', 'my-react-app', 'build', 'index.html'));
-  }
+   next();
 });
+
+
 
 
 
@@ -100,5 +117,3 @@ app.use(function (req, res, next) {
   return res.status(404).send("404");
 });
 app.listen(process.env.PORT, () => console.log("server started"));
-
-
