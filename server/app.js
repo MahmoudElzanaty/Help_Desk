@@ -60,11 +60,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(
   cors({
-    origin: [process.env.ORIGIN, 'http://localhost:3001'], // Add 'http://localhost:3001' to the list of allowed origins
+    origin: [process.env.ORIGIN, 'http://localhost:3001'] ,// Add 'http://localhost:3001' to the list of allowed origins
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })
 );
+
 
 app.use("/api/v1", authRouter);
 app.use(authenticationMiddleware);
@@ -83,7 +84,8 @@ app.use("/api/v1/users", userRouter);
    res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS,HEAD");
    res.setHeader(
      "Access-Control-Expose-Headers",
-     "*"
+     "*" 
+
    );
 
    next();

@@ -30,13 +30,13 @@ const ticketSchema = new mongoose.Schema(
     Priority: {
       type: String,
       enum: ['High', 'Medium', 'Low'],
-      required: true,
+      required: false,
     },
     Date: {
       type: Date,
       required: false,
     },
-    Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' },
+    Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' , required : false },
 
       
     TDescribtion: {

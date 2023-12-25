@@ -25,7 +25,7 @@ const TicketsController = {
           } = req.body;
       
           // Check for required fields
-          if (!user || !agent || !Category || !Sub_Category || !Priority || !Status || !TDescribtion || !userRate) {
+          if (!user || !Category || !Sub_Category || !TDescribtion ) {
             return res.status(400).json({ error: 'All fields are required' });
           }
       

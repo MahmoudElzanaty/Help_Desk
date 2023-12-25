@@ -1,7 +1,9 @@
 // Notifi.js
 const nodemailer = require('nodemailer');
 const UserModel = require('../models/userModel');
+const User = require('../models/userModel');
 const TicketModel = require('../models/Ticket_Model'); // Update the import to match the new file name
+require('dotenv').config();
 
 // Create a Nodemailer transporter using SMTP
 const transporter = nodemailer.createTransport({
@@ -30,9 +32,15 @@ const sendEmail = async (to, subject, text) => {
 };
 
 // Controller function to handle the submission of a new ticket
-const submitTicket = async (req, res) => {
+const NotifiController = {
+   submitTicket : async (req, res) => {
+    console.log('Received POST request at /Tickets/createTicket');
   try {
-    const { user: userId } = req.body;
+    // Retrieve user ID from the decoded token
+    const userId = req.user.userId;
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is missing in the request' });
+    }
     const user = await UserModel.findById(userId);
 
     if (user) {
@@ -46,10 +54,10 @@ const submitTicket = async (req, res) => {
     console.error('Error submitting ticket:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
-};
+},
 
 // Controller function to handle the change of ticket status
-const changeTicketStatus = async (req, res) => {
+ changeTicketStatus : async (req, res) => {
   try {
     const { ticketId, newStatus } = req.body;
     console.log('Request Body:', req.body);
@@ -73,10 +81,10 @@ const changeTicketStatus = async (req, res) => {
     console.error('Error changing ticket status:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
-};
+},
 
 //Integrated messaging system
-const sendEmailToUser = async (req, res) => {
+sendEmailToUser : async (req, res) => {
   try {
     const { userEmail, description } = req.body;
     const user = await UserModel.findOne({ Email: userEmail });
@@ -94,11 +102,8 @@ const sendEmailToUser = async (req, res) => {
     console.error('Error sending email to user:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
+}
+
 };
 
-
-module.exports = {
-  submitTicket,
-  changeTicketStatus,
-  sendEmailToUser,
-};
+module.exports = NotifiController;

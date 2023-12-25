@@ -7,6 +7,8 @@ import AdminDashboard from './components/Admin';
 import UserDashboard from './components/User';
 import ManagerDashboard from './components/Manager';
 import AgentDashboard from './components/Agent';
+import CreateTicketPage from './pages/createTicket'; // Adjust the import path
+
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -45,6 +47,8 @@ function App() {
             element={<LoginForm handleLogin={handleLogin} />}
           />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/create-ticket" element={<CreateTicketPage />} />
+
 
           {/* Actual dashboard components */}
           <Route path="/admin" element={<AdminDashboard />} />
