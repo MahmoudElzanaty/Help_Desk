@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const schemaOptions = {
   strict: false,
   timestamps: false,
@@ -7,40 +6,30 @@ const schemaOptions = {
 };
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  user_id: {
     type: String,
     minLength: 3,
-    maxLength: 30,
-    required: true,
+    maxLength: 10,
+    required: false,
   },
   Email: {
     type: String,
     minLength: 1,
     maxLength: 30,
-    required: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  isAgent: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-  isManager: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-  phoneNumber: {
+  Phone_Number: {
     type: String,
   },
-  rate: {
+  Rate: {
     type: Number,
     required: false,
     default: 0,
   },
+  role: {
+    type: String,
+    required: true,
+    enum: ['user','agent','manger','admin'] // Set default value to 'user'
+    }
 }, schemaOptions);
 
 // Use UserSchema as the model for the "Users" collection

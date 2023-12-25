@@ -1,47 +1,24 @@
 const express = require("express");
 const Ticket = require("../models/Ticket_Model");
+const TicketsController = require("../controllers/TicketsController");
 const router = express.Router();
-
-// Get all Tickets
-router.get("/", async (req, res) => {
-  try {
-    const tickets = await Ticket.find();
-    return res.status(200).json(tickets);
-  } catch (err) {
-    return res.status(500).json({ error: err });
-  }
-});
-
-// Get a Ticket by id
-router.get("/:id", async (req, res) => {
-  try {
-    const ticket = await Ticket.findById(req.params.id);
-    return res.status(200).json(ticket);
-  } catch (err) {
-    return res.status(500).json({ error: err });
-  }
-});
-
-// Create a Ticket
-router.post("/", async (req, res) => {
-  try {
-    const newTicket = await Ticket.create(req.body);
-    return res.status(201).json(newTicket);
-  } catch (e) {
-    console.error("Error creating ticket:", e);
-    return res.status(400).json({ message: e.message });
-  }
-});
+const authorizationMiddleware = require('../Middleware/authorizationMiddleware');
+const authenticationMiddleware = require('../Middleware/authenticationMiddleware');
 
 
-// Delete a Ticket
-router.delete("/:id", async (req, res) => {
-  try {
-    const ticket = await Ticket.findByIdAndDelete(req.params.id);
-    return res.status(200).json({ ticket, msg: "deleted" });
-  } catch (error) {
-    return res.status(500).json({ error: error });
-  }
-});
+router.post("/createTicket", authenticationMiddleware, TicketsController.createTicket);
+//router.get("/", authorizationMiddleware(['manager', 'agent']), TicketsController.getAllTickets);
+//router.get("/", authorizationMiddleware(['manager', 'agent']), TicketsController.getAllTickets);
+router.get("/getTicketsByManagerId", authorizationMiddleware(['manager', 'agent']), TicketsController.getTicketsByManagerId);
+router.get("/getTicketsByAgentId", authorizationMiddleware(['manager', 'agent']), TicketsController.getTicketsByAgentId);
+
+//router.get("/:id", authorizationMiddleware(['manager', 'agent']), TicketsController.getTicketById);
+
+
+router.put("/updateTicket", authorizationMiddleware(['manager', 'agent']), TicketsController.updateTicket);
+
+router.delete("/deleteTicket/:id", authorizationMiddleware(['agent','manager']), TicketsController.deleteTicket);
 
 module.exports = router;
+
+

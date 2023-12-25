@@ -1,17 +1,69 @@
-import React from "react";
-import Chat from "./Chat";
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import LoginForm from './components/loginComponent'; // Update the path
+import RegisterForm from './components/registerComponent';
+import HomePage from './components/homeComponent';
+import AdminDashboard from './components/Admin';
+import UserDashboard from './components/User';
+import ManagerDashboard from './components/Manager';
+import AgentDashboard from './components/Agent';
+import TicketForm from './components/TicketForm';
 
-const App = () => {
-  // Set the sender and receiver IDs based on your logic
-  const senderId = "senderId";
-  const receiverId = "receiverId";
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
+function App() {
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem('userRole');
+
+    if (storedRole) {
+      setUserRole(storedRole);
+    }
+  }, []);
+
+  const handleLogin = (role) => {
+    setUserRole(role);
+    localStorage.setItem('userRole', role);
+    window.location.replace(`/${role.toLowerCase()}`);
+  };
 
   return (
-    <div>
-      <h1>One-to-One Live Chat</h1>
-      <Chat senderId={senderId} receiverId={receiverId} />
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                userRole={userRole}
+                setUserRole={setUserRole}
+              />
+            }
+          />
+          <Route
+            path="/login"
+            element={<LoginForm handleLogin={handleLogin} />}
+          />
+          <Route path="/register" element={<RegisterForm />} />
+
+          {/* Actual dashboard components */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/user" element={<TicketForm />} />
+          <Route path="/manager" element={<ManagerDashboard />} />
+          <Route path="/agent" element={<AgentDashboard />} />
+
+          {/* Redirect to login if the user is not authenticated */}
+          <Route
+            path=""
+            element={<Navigate to="/login" replace />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
-};
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
 
 export default App;

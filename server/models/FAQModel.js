@@ -24,8 +24,20 @@ const FAQSchema = new mongoose.Schema({
     min: 1,
     required: true,
   },
-}, schemaOptions);
+  Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' },
 
-FAQSchema.index({ TDescribtion: 'text' });
+    
+  
+  Category: {
+    type: String,
+    enum: ['Hardware', 'Software', 'Network'],
+    required: true,
+  },
+  Sub_Category: {
+    type: String,
+    enum:['Desktops', 'Laptops', 'Printers', 'Servers', 'Networking equipment','Operating system', 'Application software', 'Custom software', 'Integration issues','Email issues', 'Internet connection problems', 'Website errors'],
+    required: true,
+  },
+}, schemaOptions);
 
 module.exports = mongoose.model('FAQ', FAQSchema);

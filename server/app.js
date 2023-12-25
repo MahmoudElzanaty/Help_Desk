@@ -1,14 +1,17 @@
 const express = require("express");
-//const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const cookieParser=require('cookie-parser')
+const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require("mongoose");
-const ticketRouter = require("./Routes/Tickets");
+const ticketRouter = require("./routes/Tickets");
 const workflowRouter = require("./routes/Workflow");
 const userRouter = require("./routes/Users");
 const FAQ = require("./routes/FAQ");
 const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
+
+const authRouter = require("./routes/auth");
 const Notification = require("./routes/Notifi");
 //
 const ChatMessage = require("./models/messageModel");
@@ -42,38 +45,42 @@ io.on("connection", (socket) => {
     console.log("Client disconnected");
   });
 });
-//
-
-
 
 require('dotenv').config();
 
-//const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
-//const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
+const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
+const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
+
 const cors = require("cors");
-
-
-
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use("/Tickets", ticketRouter);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser())
+
+const corsOptions = {
+  origin: 'http://localhost:3001', 
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
+
+
+
+app.use("/api/v1", authRouter);
+app.use(authenticationMiddleware);
+app.use("/api/v1/Tickets", ticketRouter, cors());
 app.use("/Workflow", workflowRouter);
 app.use("/users", userRouter);
 app.use("/FAQ", FAQ);
 app.use("/Communication", Communication);
 app.use("/Reports", Reports);
-app.use("/Notifi", Notification);
-app.use(cookieParser())
-app.use(
-  cors({
-    origin: process.env.ORIGIN,
-    methods: ["GET", "POST", "DELETE", "PUT"],
-    credentials: true,
-  })
-);
+app.use("/api/v1/Notifi", Notification);
+app.use("/api/v1/users", userRouter);
 
+
+// Remove or comment out the following lines:
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
 //   res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS,HEAD");
@@ -81,12 +88,12 @@ app.use(
 //     "Access-Control-Expose-Headers",
 //     "*"
 //   );
-
 //   next();
 // });
 
-//app.use(authenticationMiddleware);
-//app.use(authorizatonMiddleware);
+
+
+
 
 
 const db_name = process.env.DB_NAME;
@@ -110,3 +117,14 @@ app.use(function (req, res, next) {
   return res.status(404).send("404");
 });
 app.listen(process.env.PORT, () => console.log("server started"));
+
+
+
+
+
+
+
+
+
+
+
