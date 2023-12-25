@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const schemaOptions = {
   strict: false,
-  timestamps: false,
+  timestamps: true,
 };
 
 const ReportSchema = new mongoose.Schema({
@@ -24,10 +24,6 @@ const ReportSchema = new mongoose.Schema({
     type: String,
     minLength: 1,
   },
-
-  
- 
-
 
     ResolutionTime: {
       type: Date,

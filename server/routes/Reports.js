@@ -1,22 +1,24 @@
 const express = require("express");
 const ReportController = require("../controllers/ReportsController");
 const authorizationMiddleware = require("../Middleware/authorizationMiddleware");
+const authenticationMiddleware = require('../Middleware/authenticationMiddleware');
 const router = express.Router();
 
 // * Get all products//
-router.get("/all", ReportController.getAllReports);
+router.get("/all", authenticationMiddleware, ReportController.getAllReports);
 
 ////
-router.post("/create",ReportController.createReport);
+router.post("/create",authenticationMiddleware,ReportController.createReport);
 
 // * Delete one product//
-router.delete("/delete/:id",ReportController.deleteReport);
+router.delete("/delete/:id",authenticationMiddleware, ReportController.deleteReport);
 
 // * ///
-router.get("/GenearteReport/:id",ReportController.getGenearteReport);
+router.get("/GenearteReport/:id",authenticationMiddleware,ReportController.getGenearteReport);
 
 // *  one product//
-router.get("/getId/:id", ReportController.getReportById);
+router.get("/getId/:id", authenticationMiddleware, ReportController.getReportById);
 
-router.get("/analytics", ReportController.getAnalytics);
+router.get("/analytics", authenticationMiddleware, ReportController.getAnalytics);
+
 module.exports = router; // ! Don't forget to export the router

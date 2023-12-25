@@ -84,14 +84,14 @@ const NotifiController = {
 },
 
 //Integrated messaging system
-sendEmailToUser : async (req, res) => {
+sendEmailToUser: async (req, res) => {
   try {
     const { userEmail, description } = req.body;
     const user = await UserModel.findOne({ Email: userEmail });
 
     if (user) {
       const subject = 'Message from Admin';
-      const text = `Dear ${user.name},\n\n${description}\n\nBest regards,\nAdmin`;
+      const text = `Dear ${user.Email},\n\n${description}\n\nBest regards,\nAdmin`;
 
       await sendEmail(user.Email, subject, text);
       res.status(200).json({ message: 'Email sent successfully' });
@@ -103,6 +103,7 @@ sendEmailToUser : async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+
 
 };
 

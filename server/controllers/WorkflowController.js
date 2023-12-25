@@ -3,13 +3,14 @@ const Workflow = require('../models/Workflow_Model'); // hat3ml require lel Work
 const WorkflowController = {
   createWorkflow: async (req, res) => {
     try {
-      const { user, Category, Sub_Category, Workflow_Steps, Issue_Type } = req.body;
-      if (!user || !Category || !Sub_Category || !Workflow_Steps || !Issue_Type) {
+      const userId = req.user.userId; // Get userId from decoded token
+      const { Category, Sub_Category, Workflow_Steps, Issue_Type } = req.body;
+      if (!Category || !Sub_Category || !Workflow_Steps || !Issue_Type) {
         return res.status(400).json({ error: 'Incomplete data for workflow creation' });
       }
 
       const newWorkflow = new Workflow({
-        user,
+        user: userId,
         Category,
         Sub_Category,
         Workflow_Steps,

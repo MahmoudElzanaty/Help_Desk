@@ -64,6 +64,10 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
@@ -71,11 +75,11 @@ app.use(cors(corsOptions));
 app.use("/api/v1", authRouter);
 app.use(authenticationMiddleware);
 app.use("/api/v1/Tickets", ticketRouter, cors());
-app.use("/Workflow", workflowRouter);
+app.use("/api/v1/Workflow", workflowRouter);
 app.use("/users", userRouter);
 app.use("/FAQ", FAQ);
 app.use("/Communication", Communication);
-app.use("/Reports", Reports);
+app.use("/api/v1/Reports", Reports);
 app.use("/api/v1/Notifi", Notification);
 app.use("/api/v1/users", userRouter);
 

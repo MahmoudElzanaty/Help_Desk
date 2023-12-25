@@ -1,6 +1,9 @@
 // App.js
 import React from 'react';
 import TicketForm from './TicketForm';
+import SendEmail from './SendEmail';
+import ReportsList from './ReportsList';
+import WorkflowForm from './WorkflowForm ';
 
 const User = () => {
 

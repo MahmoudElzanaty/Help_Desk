@@ -81,14 +81,11 @@ deleteReport: async (req, res) => {
   },
   
 getAnalytics: async (req, res) => {
-    try {
-
-               
+    try {               
 async function calculateAverageAgentRating() {
   try {
     // Get distinct agents from the collection
     const agents = await ticket.distinct('agent');
-
     // Calculate average rating for each agent
     const averageRatings = await Promise.all(
       agents.map(async (agentId) => {

@@ -76,9 +76,6 @@ await fetch('http://localhost:3000/api/v1/Notifi/submit-ticket', {
   }),
   credentials: 'include', // Ensure this line is present
 });
-
-
-
         } else {
           console.log('Error creating ticket:', response.status && response.status);
           setTicketMessage('Error creating ticket. Please try again.');
@@ -88,8 +85,6 @@ await fetch('http://localhost:3000/api/v1/Notifi/submit-ticket', {
         setTicketMessage('An error occurred during the process of creating a ticket. Please try again.');
       }
     };
-
-    
     
     const categoryOptions = ['Hardware', 'Software', 'Network'];
     const Sub_CategoryOptions = {

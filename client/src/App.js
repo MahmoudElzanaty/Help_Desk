@@ -8,6 +8,8 @@ import UserDashboard from './components/User';
 import ManagerDashboard from './components/Manager';
 import AgentDashboard from './components/Agent';
 import TicketForm from './components/TicketForm';
+import SendEmail from './components/SendEmail';
+import ReportsList from './components/ReportsList';
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -49,7 +51,7 @@ function App() {
 
           {/* Actual dashboard components */}
           <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/user" element={<TicketForm />} />
+          <Route path="/user" element={<UserDashboard />} />
           <Route path="/manager" element={<ManagerDashboard />} />
           <Route path="/agent" element={<AgentDashboard />} />
 
