@@ -69,13 +69,14 @@ app.use(
 
 app.use("/api/v1", authRouter);
 app.use("/Tickets", ticketRouter);
+app.use("/Reports", Reports);
 app.use(authenticationMiddleware);
 //app.use("/Tickets", ticketRouter);
 app.use("/Workflow", workflowRouter);
 app.use("/users", userRouter);
 app.use("/FAQ", FAQ);
 app.use("/Communication", Communication);
-app.use("/Reports", Reports);
+//app.use("/Reports", Reports);
 app.use("/Notifi", Notification);
 app.use("/api/v1/users", userRouter);
 

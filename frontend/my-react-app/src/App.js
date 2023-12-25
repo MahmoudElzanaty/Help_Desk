@@ -9,7 +9,9 @@ import ManagerDashboard from './components/Manager';
 import AgentDashboard from './components/Agent';
 import TicketForm from './components/TicketForm';
 import ViewTicketById from './components/TicketByUserId';
-import ViewTicket from './components/TicketList'
+import ViewTicket from './components/TicketList';
+import Reports from './components/reportComponent';
+import AnalyticsView from './components/aanalyticsComponent';
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -57,6 +59,8 @@ function App() {
           <Route path='/create-ticket' element={<TicketForm />} />
           <Route path='/view-ticket' element={<ViewTicket />} />
           <Route path='/ticket-byId' element={<ViewTicketById />} />
+          <Route path='/createReport' element={<Reports />} />
+          <Route path='/analytics' element={<AnalyticsView />} />
 
 
           {/* Redirect to login if the user is not authenticated */}
