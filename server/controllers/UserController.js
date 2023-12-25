@@ -139,40 +139,50 @@ const UserController = {
       res.status(500).json({ error: error.message });
     }
   },
-
+  /*
   makeAgent: async (req, res) => {
     try {
-        // Check if the current logged-in user is a manager
-        const loggedInUser = req.user; // Assuming you set the user in the middleware
-        if (!loggedInUser || loggedInUser.role !== 'manager') {
-            return res.status(403).json({ error: 'Access forbidden. Only managers can make users admin.' });
-        }
+      // Check if the current logged-in user is a manager
+      const loggedInUserId = req.session.user_id;
 
-        // Get the user ID to be made admin from the request parameters
-        const userIdToMakeAgent = req.params.id;
 
-        // Find the user in the database by ID
-        const userToMakeAgent = await User.findOne(userIdToMakeAgent);
+if (!loggedInUserId) {
+  return res.status(403).json({ error: 'Access forbidden. Only Admins can make users agents.' });
+}
 
-        // Check if the user exists
-        if (!userToMakeAgent) {
-            return res.status(404).json({ error: 'User not found' });
-        }
+// Now fetch the user using the retrieved ID
+const loggedInUser = await User.findOne({ _id: loggedInUserId });
 
-        // Change the user's role to admin
-        userToMakeAgentn.role = "agent";
-
-        // Save the updated user in the database
-        const updatedUser = await userToMakeAgent.save();
-
-        // Respond with the updated user
-        res.status(200).json({ message: 'User role updated to admin', user: updatedUser });
+if (!loggedInUser || loggedInUser.role !== 'admin') {
+  return res.status(403).json({ error: 'Access forbidden. Only Admins can make users agents.' });
+}
+  
+      // Get the user ID to be made admin from the request parameters
+      const userIdToMakeAgent = req.params.id;
+  
+      // Find the user in the database by ID
+      const userToMakeAgent = await User.findOne({ _id: userIdToMakeAgent });
+  
+      // Check if the user exists
+      if (!userToMakeAgent) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Change the user's role to agent
+      userToMakeAgent.role = "agent";
+  
+      // Save the updated user in the database
+      const updatedUser = await userToMakeAgent.save();
+  
+      // Respond with the updated user
+      res.status(200).json({ message: 'User role updated to agent', user: updatedUser });
     } catch (error) {
-        console.error('Error making admin:', error);
-        res.status(500).json({ error: 'Server error' });
+      console.error('Error making agent:', error);
+      res.status(500).json({ error: 'Server error' });
     }
-},
-
+  },
+  */
+  
  
   GetAllUsers: async (req, res) => {
     try {

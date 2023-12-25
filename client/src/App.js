@@ -11,6 +11,7 @@ import CreateTicketPage from './pages/createTicket'; // Adjust the import path
 
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import UpdateTicketPage from './pages/updateTicket';
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -48,6 +49,8 @@ function App() {
           />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/create-ticket" element={<CreateTicketPage />} />
+          <Route path="/updateTicket" element={<UpdateTicketPage/>}/>
+
 
 
           {/* Actual dashboard components */}

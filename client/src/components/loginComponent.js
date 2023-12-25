@@ -32,10 +32,11 @@ const LoginForm = ({ handleLogin }) => {
 
       if (response.ok) {
         const responseData = await response.json();
-        const role = responseData.user.role;
+        const { role, _id: userId } = responseData.user; // Extract user ID from the response
         localStorage.setItem('loginMessage', JSON.stringify(responseData));
+        localStorage.setItem('userId', userId); // Save user ID to local storage
         setLoginMessage(`Login successful. User role: ${role}`);
-        handleLogin(role);
+        handleLogin(role, userId); // Pass user ID to handleLogin function
       } else {
         setLoginMessage('Login failed. Please check your email and password.');
       }

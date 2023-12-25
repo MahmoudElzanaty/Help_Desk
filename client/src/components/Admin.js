@@ -7,9 +7,9 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       <nav className="navbar">
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/profile">Profile</Link>
-        <Link to="/settings">Settings</Link>
+        <Link to="/dashboard" className="nav-link">Dashboard</Link>
+        <Link to="/profile" className="nav-link">Profile</Link>
+        <Link to="/settings" className="nav-link">Settings</Link>
       </nav>
 
       <div className="content">
@@ -18,7 +18,9 @@ const AdminDashboard = () => {
       </div>
 
       {/* Create Ticket button outside the navbar */}
-      
+      <Link to="/create-ticket" className="create-ticket-button">
+        Create Ticket
+      </Link>
     </div>
   );
 };
