@@ -12,6 +12,7 @@ import ViewTicketById from './components/TicketByUserId';
 import ViewTicket from './components/TicketList';
 import Reports from './components/reportComponent';
 import AnalyticsView from './components/aanalyticsComponent';
+import ReportsById from './components/reportByIdComponent';
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -61,6 +62,7 @@ function App() {
           <Route path='/ticket-byId' element={<ViewTicketById />} />
           <Route path='/createReport' element={<Reports />} />
           <Route path='/analytics' element={<AnalyticsView />} />
+          <Route path='/report-byId' element={<ReportsById />} />
 
 
           {/* Redirect to login if the user is not authenticated */}

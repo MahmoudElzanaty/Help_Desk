@@ -72,6 +72,7 @@ deleteReport: async (req, res) => {
   },
   getReportById: async (req, res) => {
     try {
+      console.log('Report ID:', req.params.id);
       const reportModel = await ReportsModel.findById(req.params.id);
       return res.status(200).json(reportModel);
     } catch (err) {
@@ -127,6 +128,6 @@ deleteReport: async (req, res) => {
       return res.status(500).json({ message: 'Internal Server Error' });
     }
   },
-  
+
 };  
 module.exports = reportController;

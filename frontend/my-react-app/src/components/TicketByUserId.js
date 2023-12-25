@@ -51,7 +51,7 @@ const TicketByUserId = () => {
       ) : (
         <p>No tickets found for this user.</p>
       )}
-      <button onClick={() => navigate('/view-ticket')}>Back to All Tickets</button>
+      <button onClick={() => navigate('/view-ticket')}>All Tickets</button>
     </div>
   );
 };
