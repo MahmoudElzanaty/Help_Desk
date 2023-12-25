@@ -4,7 +4,7 @@ const authenticationMiddleware = require('../Middleware/authenticationMiddleware
 const NotifiController = require('../controllers/Notificontroller');
 
 // Middleware to send a notification when a new ticket is created
-router.post('/submit-ticket',authenticationMiddleware,NotifiController.submitTicket);
+router.post('/submit-ticket', authenticationMiddleware, NotifiController.submitTicket);
 
 // Middleware to send a notification when the ticket status is changed
 router.put('/change-status', authenticationMiddleware,NotifiController.changeTicketStatus);

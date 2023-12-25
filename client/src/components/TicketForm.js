@@ -62,8 +62,25 @@
           const result = await response.json();
           console.log('Ticket created successfully:', result);
           setTicketMessage('Ticket created successfully');
+          
+////////////////////////////////////////////////////////////////Notifications///////////////////////////////// 
+// Call the notification endpoint after creating the ticket
+await fetch('http://localhost:3000/api/v1/Notifi/submit-ticket', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${userToken}`,
+  },
+  body: JSON.stringify({
+    // Your request payload here
+  }),
+  credentials: 'include', // Ensure this line is present
+});
+
+
+
         } else {
-          console.log('Error creating ticket:', response.status);
+          console.log('Error creating ticket:', response.status && response.status);
           setTicketMessage('Error creating ticket. Please try again.');
         }
       } catch (error) {
@@ -72,44 +89,7 @@
       }
     };
 
-////////////////////////////////////////////////////////////////Notifications///////////////////////////////// 
-/*   const Notification = async (e) => {
-      e.preventDefault();
-      try {
-        if (!userId) {
-          setTicketMessage('User ID not found. Please log in.');
-          return;
-        }
     
-        const userToken = Cookies.get('token');
-        console.log('User Token:', userToken);
-        if (!userToken) {
-          setTicketMessage('User token not found. Please log in.');
-          return;
-        }
-    
-        const response = await fetch('http://localhost:3000/api/v1/Notifi/submit-ticket',{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userToken}`,
-          },
-          credentials: 'include', // Ensure this line is present
-        });
-        if (response.status === 201) {
-          const result = await response.json();
-          console.log('Ticket created successfully:', result);
-          setTicketMessage('Ticket created successfully');
-        } else {
-          console.log('Error creating ticket:', response.status);
-          setTicketMessage('Error creating ticket. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        setTicketMessage('An error occurred during the process of creating a ticket. Please try again.');
-      }
-    };
-    */
     
     const categoryOptions = ['Hardware', 'Software', 'Network'];
     const Sub_CategoryOptions = {

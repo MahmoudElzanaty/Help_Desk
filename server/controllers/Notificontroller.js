@@ -1,7 +1,9 @@
 // Notifi.js
 const nodemailer = require('nodemailer');
 const UserModel = require('../models/userModel');
+const User = require('../models/userModel');
 const TicketModel = require('../models/Ticket_Model'); // Update the import to match the new file name
+require('dotenv').config();
 
 // Create a Nodemailer transporter using SMTP
 const transporter = nodemailer.createTransport({
@@ -32,9 +34,10 @@ const sendEmail = async (to, subject, text) => {
 // Controller function to handle the submission of a new ticket
 const NotifiController = {
    submitTicket : async (req, res) => {
+    console.log('Received POST request at /Tickets/createTicket');
   try {
-    console.log('Request Body:', req.body);  // Add this line for debugging
-    const { user: userId } = req.body;
+    // Retrieve user ID from the decoded token
+    const userId = req.user.userId;
     if (!userId) {
       return res.status(400).json({ message: 'User ID is missing in the request' });
     }
