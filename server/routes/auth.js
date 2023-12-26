@@ -18,6 +18,10 @@ router.post("/register",UserController.register);
 
 //router.put("/makeAgent" , UserController.makeAgent)
 
+router.get("/generateMFACode", UserController.generateMFACode);
+
+router.get("/setMFA", UserController.setMFA);
+
 router.post("/createTicket" ,TicketsController.createTicket);
 
 router.post('/submit-ticket' , NotifiController.submitTicket);

@@ -16,7 +16,7 @@ const UserDashboard = () => {
 
   const enable2FA = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/generateMFACode?id=${userId}`);
+      const response = await fetch('http://localhost:3000/api/v1/generateMFACode?id=${userId}');
       const { image, success, codeRequested } = await response.json();
 
       if (success) {

@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const User = require('../models/userModel');
 const qrcode = require("qrcode");
 const { authenticator } = require("otplib");
+const speakeasy = require('speakeasy');
+
 require('dotenv').config();
 
 
@@ -114,7 +116,7 @@ const UserController = {
         expiresAt: expiresAt,
       });
 
-      res.cookie('userId', user._id, { httpOnly: true });
+      
 
       await newSession.save();
 
@@ -132,95 +134,110 @@ const UserController = {
       res.status(500).json({ message: 'Server error' });
     }
   },
+// Route to generate QR code for MFA
+generateMFACode: async (req, res) => {
+  try {
+    const { id } = req.cookies;
 
-    // Route to generate QR code for MFA
-    generateMFACode: async (req, res) => {
-      try {
-        const { id } = req.cookies;
-  
-        // Fetch user from MongoDB using Mongoose model
-        const user = await User.findById(id);
-  
-        if (!user) {
-          return res.status(404).json({
-            success: false,
-            message: "User not found",
-          });
-        }
-  
-        // Generate a temporary secret for MFA
-        const secret = authenticator.generateSecret();
-  
-        // Create a URI for the QR code
-        const uri = authenticator.keyuri(id, "HelpDesk", secret);
-  
-        // Generate QR code image
-        const image = await qrcode.toDataURL(uri);
-  
-        // Save the temporary secret in user data
-        user["MFA"].tempSecret = secret;
-  
-        // Save the updated user document to MongoDB
-        await user.save();
-  
-        return res.json({
-          success: true,
-          image,
-        });
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-          success: false,
-          message: "Internal Server Error",
-        });
-      }
-    },
-  
-    // Route to set up MFA
-    setMFA: async (req, res) => {
-      try {
-        const { id } = req.cookies;
-        const { code } = req.query;
-  
-        // Fetch user from MongoDB using Mongoose model
-        const user = await User.findById(id);
-  
-        if (!user) {
-          return res.status(404).json({
-            success: false,
-            message: "User not found",
-          });
-        }
-  
-        // Retrieve the temporary secret from user data
-        const { tempSecret } = user["MFA"];
-  
-        // Check if the provided code is valid
-        const verified = authenticator.check(code, tempSecret);
-        if (!verified) {
-          throw new Error("Invalid MFA code");
-        }
-  
-        // Enable MFA for the user
-        user["MFA"] = {
-          enabled: true,
-          secret: tempSecret,
-        };
-  
-        // Save the updated user document to MongoDB
-        await user.save();
-  
-        return res.json({
-          success: true,
-        });
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-          success: false,
-          message: "Internal Server Error",
-        });
-      }
-    },
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Generate a secret key for MFA using speakeasy
+    const secret = speakeasy.generateSecret({ length: 20 });
+
+    // Create a URI for the QR code
+    const uri = authenticator.keyuri(id, "Help_Desk", secret.base32);
+
+    console.log("Generated URI for QR code:", uri);
+
+    // Generate QR code image
+    const image = await qrcode.toDataURL(uri);
+
+    if (!image) {
+      console.error("Failed to generate QR code image");
+      return res.status(500).json({
+        success: false,
+        message: "Failed to generate QR code image",
+      });
+    }
+
+    // Save the secret key in user data
+    user["MFA"].tempSecret = secret.base32;
+
+    // Save the updated user document to MongoDB
+    await user.save();
+
+    return res.json({
+      success: true,
+      image,
+    });
+  } catch (error) {
+    console.error("Error in generateMFACode:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+},
+
+// Route to set up MFA
+setMFA: async (req, res) => {
+  try {
+    const { id } = req.cookies;
+    const { code } = req.query;
+
+    // Fetch user from MongoDB using Mongoose model
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Retrieve the temporary secret from user data
+    const { tempSecret } = user["MFA"];
+
+    // Check if the provided code is valid using speakeasy
+    const verified = speakeasy.totp.verify({
+      secret: tempSecret,
+      encoding: 'base32',
+      token: code,
+    });
+
+    if (!verified) {
+      console.error("Invalid MFA code");
+      throw new Error("Invalid MFA code");
+    }
+
+    // Enable MFA for the user
+    user["MFA"] = {
+      enabled: true,
+      secret: tempSecret,
+    };
+
+    // Save the updated user document to MongoDB
+    await user.save();
+
+    return res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error in setMFA:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+},
+
 
 
   createUser: async (req, res) => {
