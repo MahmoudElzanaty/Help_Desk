@@ -42,9 +42,15 @@ router.get('/getReportById/:id' , ReportsController.getReportById);
 
 router.get('/analytics/:id' , ReportsController.getAnalytics);
 
+router.delete('/deleteReport/:id' , ReportsController.deleteReport);
+
 router.get('/getAllFAQs' , FAQController.getAllFAQs);
 
 router.post('/createFAQ' , FAQController.createFAQ);
+
+router.get('/searchFAQ' , FAQController.GetBySearch);
+
+router.delete('/deleteFAQ/:id', FAQController.deleteFAQById);
 
 router.get('/getAllWorkflows' , WorkflowController.getAllWorkflows);
 

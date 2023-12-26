@@ -24,7 +24,7 @@ const CreateFAQPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3000/FAQ/createFAQ', {
+      const response = await fetch('http://localhost:3000/api/v1/createFAQ', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

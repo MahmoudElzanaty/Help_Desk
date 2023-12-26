@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 
 const CreateReportForm = () => {
   const [ticketId, setTicketId] = useState('');
   const [userRate, setUserRate] = useState(null);
   const [status, setStatus] = useState(null);
   const [resolutionTime, setResolutionTime] = useState(null);
-  const navigate = useNavigate();
-
 
   useEffect(() => {
     // Fetch initial data if needed
@@ -77,7 +73,6 @@ const CreateReportForm = () => {
           <p>Resolution Time: {resolutionTime} seconds</p>
         </div>
       )}
-    <button onClick={() => navigate('/manager')}>Back to Dashboard</button>
     </div>
   );
 };

@@ -43,20 +43,22 @@ createFAQ: async (req, res) => {
   try {
     const {
       tickets,
-      TDescribtion,
+      Question,
+      Answer,
       FAQ_ID,
       Category,
       Sub_Category
     } = req.body;
 
     // Validate that required fields are present
-    if (!tickets || !FAQ_ID || !Category || !Sub_Category) {
+    if (!tickets || !Question || !Answer || !FAQ_ID || !Category || !Sub_Category) {
       return res.status(400).json({ error: 'Incomplete data for FAQ creation' });
     }
 
     const newFAQ = new FAQ({
       tickets,
-      TDescribtion,
+      Question,
+      Answer,
       FAQ_ID,
       Category,
       Sub_Category

@@ -1,7 +1,7 @@
 // ReportsPage.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import './ReportsPage.css'; // Import your custom styles
+import { Link } from 'react-router-dom';
+import './ReportsPage.css';
 
 const ReportsPage = () => {
   const [reports, setReports] = useState([]);
@@ -35,12 +35,36 @@ const ReportsPage = () => {
     fetchReports();
   }, []);
 
+  const handleDeleteReport = async (reportId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/v1/deleteReport/${reportId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        // Filter out the deleted report from the state
+        setReports((prevReports) => prevReports.filter((report) => report._id !== reportId));
+      } else {
+        const errorData = await response.json();
+        console.error('Error deleting report:', errorData.message);
+        // Handle error (e.g., show an error message)
+      }
+    } catch (error) {
+      console.error('Error deleting report:', error);
+      // Handle network error or other unexpected issues
+    }
+  };
+
   return (
     <div className="reports-page">
       <div className="page-header">
         <h1>All Reports</h1>
         <div className="buttons-container">
-        <Link to="/createReport" className="redirect-button">
+          <Link to="/createReport" className="redirect-button">
             Create Report
           </Link>
           <Link to="/report-byId" className="redirect-button">
@@ -49,7 +73,6 @@ const ReportsPage = () => {
           <Link to="/manager" className="redirect-button">
             Back to Dashboard
           </Link>
-         
         </div>
       </div>
 
@@ -66,6 +89,7 @@ const ReportsPage = () => {
                 <th>Report Data</th>
                 <th>Resolution Time</th>
                 <th>User Rate</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -76,7 +100,9 @@ const ReportsPage = () => {
                   <td>{report.R_data}</td>
                   <td>{report.ResolutionTime}</td>
                   <td>{report.UserRate}</td>
-                  {/* Add more cells based on report fields */}
+                  <td>
+                    <button onClick={() => handleDeleteReport(report._id)}>Delete</button>
+                  </td>
                 </tr>
               ))}
             </tbody>

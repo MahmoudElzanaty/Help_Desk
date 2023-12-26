@@ -20,7 +20,7 @@ import WorkflowById from './components/Workflow/getbyIdWorkflow';
 import CreateWorkflow from './components/Workflow/createWorkflow';
 import WorkflowUpdate from './components/Workflow/WorkflowUpdate';
 import FAQSearchPage from './components/FAQ/faqSearchComponent';
-import FAQSearch from './components/FAQ/FAQComponent';
+// import FAQSearch from './components/FAQ/FAQComponent';
 import CreateFAQPage from './components/FAQ/createFAQComponent';
 import DeleteFAQPage from './components/FAQ/deleteFAQ';
 import FAQPage from './components/FAQ/FAQPage';
@@ -77,7 +77,7 @@ function App() {
           <Route path='/report-byId' element={<ReportsById />} />
           <Route path='/FAQPage' element={< FAQPage />} />
           <Route path='/ReportsPage' element={< ReportsPage />} />
-          <Route path='/searchFAQ' element={<FAQSearch />} />
+          {/* <Route path='/searchFAQ' element={<FAQSearch />} /> */}
           <Route path='/createFAQPage' element={<CreateFAQPage />} />
           <Route path='/deleteFAQ' element={<DeleteFAQPage />} />
           <Route path='/workflowList' element={<WorkflowList />} />
