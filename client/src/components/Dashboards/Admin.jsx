@@ -30,6 +30,9 @@ const AdminDashboard = () => {
         <Link to="/CreateUser" className="create-user-button">
           Create User
         </Link>
+        <Link to="/UpdateUser" className="Update-user-button">
+          Update User
+        </Link>
       </div>
     </div>
   );

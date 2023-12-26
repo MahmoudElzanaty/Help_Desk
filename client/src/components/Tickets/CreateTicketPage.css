@@ -34,7 +34,7 @@
   }
   
   button {
-    background-color: #4caf50;
+    background-color: #6495ED;
     color: #ffffff;
     padding: 12px;
     border: none;
@@ -44,7 +44,7 @@
   
   .response-message {
     margin-top: 20px;
-    color: #4caf50;
+    color: #6495ED;
     font-weight: bold;
   }
   

@@ -28,7 +28,7 @@ router.get('/getUserByid' , UserController.getUserByid);
 
 router.put('/updateTicket' , TicketsController.updateTicket);
 
-router.get('/getTicketsByAgentId' , TicketsController.getTicketsByAgentId);
+router.get('/getTicketsByAgentId/:id' , TicketsController.getTicketsByAgentId);
 
 router.get('/getTicketsByUserId/:id' , TicketsController.getTicketsByUserId);
 
@@ -63,6 +63,8 @@ router.post("/CreateUser", UserController.CreateUser);
 router.put("/updateRole/:id", UserController.updateRole);
 
 router.put('/updateWorkflowById/:id' , WorkflowController.updateWorkflowById);
+
+router.put('/UpdateUser/:id' , UserController.UpdateUser)
 
 
 

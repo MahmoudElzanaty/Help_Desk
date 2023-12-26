@@ -72,7 +72,7 @@ h1 {
 
 .status-change button {
   padding: 8px 15px;
-  background-color: #4caf50;
+  background-color: #6495ED;
   color: white;
   border: none;
   border-radius: 5px;
@@ -83,7 +83,7 @@ h1 {
   background-color: #45a049;
 }
 .header-box {
-  background-color: #4caf50;
+  background-color: #6495ED;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -107,7 +107,7 @@ h1 {
 }
 
 .header-box {
-  background-color: #4caf50; /* Green background color */
+  background-color: #6495ED; /* Green background color */
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);

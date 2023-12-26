@@ -15,20 +15,25 @@ const UserDashboard = () => {
     <div className="user-dashboard" style={dashboardStyle}>
       <nav className="navbar">
 
-        <Link to="/dashboard" className="nav-link">Dashboard</Link>
+        <Link to="/WorkflowUser" className="nav-link">Workflow</Link>
         <Link to="/ReportsPage" className="nav-link">Reports</Link>
         <Link to="/FAQPage" className="nav-link">FAQ</Link>
       </nav>
 
-      <div className="content">
-        <h2>Hello User.</h2>
-        {/* Other content in the user dashboard */}
-      </div>
+      
 
       {/* Create Ticket button outside the navbar */}
       <Link to="/create-ticket">
         <button className="create-ticket-button">Create Ticket</button>
       </Link>
+
+      <Link to="/UpdateUser" className="Update-user-button">
+          Update User
+        </Link>
+
+        <Link to="/ticket-byId" className="view-ticket-button">
+           View Tickets
+        </Link>
     </div>
   );
 };

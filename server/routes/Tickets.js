@@ -11,7 +11,7 @@ router.get("/getAllTickets",authorizationMiddleware(['manger', 'admin' , 'agent'
 
 //router.get("/", authorizationMiddleware(['manager', 'agent']), TicketsController.getAllTickets);
 router.get("/getTicketsByManagerId", authorizationMiddleware(['manger', 'admin' , 'agent']), TicketsController.getTicketsByManagerId);
-router.get("/getTicketsByAgentId", authorizationMiddleware(['manger', 'admin' , 'agent']), TicketsController.getTicketsByAgentId);
+router.get("/getTicketsByAgentId/:id", authorizationMiddleware(['manger', 'admin' , 'agent']), TicketsController.getTicketsByAgentId);
 
 
 
