@@ -1,88 +1,64 @@
+// TicketByUserId.js
 import React, { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
 
-const FAQSearchPage = () => {
+const FAQComponent = () => {
   const [Category, setCategory] = useState('');
-  const [Sub_Category, setSubCategory] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const subCategoriesOptions = [
-    'Desktops', 'Laptops', 'Printers', 'Servers', 'Networking equipment',
-    'Operating system', 'Application software', 'Custom software', 'Integration issues',
-    'Email issues', 'Internet connection problems', 'Website errors'
-  ];
+  const [Sub_Category, setSub_Category] = useState('');
+  const [FAQ, setFAQ] = useState([]);
+  // const navigate = useNavigate();
 
   const handleSearch = async () => {
     try {
-      const response = await fetch('http://localhost:3000/FAQ/search');
-      console.log(response);
+      const response = await fetch(`http://localhost:3000/api/v1/searchFAQ?Category=${Category}&Sub_Category=${Sub_Category}`, {
+        headers: {
+          'Accept': 'application/json',
+        },
+        credentials: 'include',
+      });
 
-      const faqs = await response.json();
-
-      if (response.ok) {
-        setSearchResults(faqs);
-        setErrorMessage('');
-      } else if (response.status === 404) {
-        setSearchResults([]);
-        setErrorMessage('No FAQs found for the specified criteria.');
-      } else {
-        setSearchResults([]);
-        setErrorMessage('An error occurred while fetching FAQs.');
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
+
+      const data = await response.json();
+      setFAQ(data);
     } catch (error) {
-      console.error('Error fetching FAQs:', error.message);
-      setSearchResults([]);
-      setErrorMessage('An error occurred while fetching FAQs.');
+      console.error('Error fetching FAQs:', error);
     }
   };
 
   return (
     <div>
-      <h2>FAQ Search</h2>
-      <div>
-        <label htmlFor="category">Category:</label>
-        <select
-          id="category"
-          value={Category}
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          <option value="">Select Category</option>
-          <option value="Hardware">Hardware</option>
-          <option value="Software">Software</option>
-          <option value="Network">Network</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="subCategory">Sub-Category:</label>
-        <select
-          id="subCategory"
-          value={Sub_Category}
-          onChange={(e) => setSubCategory(e.target.value)}
-        >
-          <option value="">Select Sub-Category</option>
-          {subCategoriesOptions.map((subCat) => (
-            <option key={subCat} value={subCat}>
-              {subCat}
-            </option>
+      <h1>Get FAQ</h1>
+      <label>
+        Enter Category:
+        <input type="text" value={Category} onChange={(e) => setCategory(e.target.value)} />
+      </label>
+      <label>
+        Enter Sub Category:
+        <input type="text" value={Sub_Category} onChange={(e) => setSub_Category(e.target.value)} />
+      </label>
+      <button onClick={handleSearch}>Search</button>
+
+      {FAQ.length > 0 ? (
+        <ul>
+          {FAQ.map((faq) => (
+            <li key={faq._id}>
+              <p>Ticket: {faq.tickets}</p>
+              <p>FAQ ID: {faq.FAQ_ID}</p>
+              <p>Category: {faq.Category}</p>
+              <p>Sub Category: {faq.Sub_Category}</p>
+              <p>Description: {faq.TDescribtion}</p>
+            </li>
           ))}
-        </select>
-      </div>
-      <button onClick={handleSearch}>Search FAQs</button>
-
-      {errorMessage && <p>{errorMessage}</p>}
-
-      {searchResults.length > 0 && (
-        <div>
-          <h3>Search Results:</h3>
-          <ul>
-            {searchResults.map((faq) => (
-              <li key={faq._id}>{/* Render individual FAQ component here */}</li>
-            ))}
-          </ul>
-        </div>
+        </ul>
+      ) : (
+        <p>No FAQs found.</p>
       )}
+      {/* <button onClick={() => navigate('/view-ticket')}>All Tickets</button> */}
     </div>
   );
 };
 
-export default FAQSearchPage;
+export default FAQComponent;

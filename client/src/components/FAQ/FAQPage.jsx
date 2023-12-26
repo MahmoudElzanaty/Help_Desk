@@ -35,21 +35,40 @@ const FAQPage = () => {
     fetchFAQs();
   }, []);
 
+  const handleDeleteFAQ = async (faqId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/v1/deleteFAQ/${faqId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        setFAQs((prevFAQs) => prevFAQs.filter((faq) => faq._id !== faqId));
+      } else {
+        const errorData = await response.json();
+        console.error('Error deleting FAQ:', errorData.message);
+      }
+    } catch (error) {
+      console.error('Error deleting FAQ:', error);
+      // Handle network error or other unexpected issues
+    }
+  };
+
   return (
     <div className="FAQPage">
       <div className="page-header">
         <h1>All FAQs</h1>
         <div className="buttons-container">
-        <Link to="/createFAQPage" className="redirect-button">
+          <Link to="/createFAQPage" className="redirect-button">
             Create FAQ
           </Link>
-          <Link to="/searchFAQ" className="redirect-button">
+          <Link to="/FAQSearchPage" className="redirect-button">
             Search FAQ
           </Link>
-          <Link to="/deleteFAQ" className="redirect-button">
-            Delete FAQ
-          </Link>
-          
+          {/* Add Link to DeleteFAQPage if needed */}
         </div>
       </div>
 
@@ -66,6 +85,7 @@ const FAQPage = () => {
                 <th>Status</th>
                 <th>Category</th>
                 <th>Sub Category</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -76,6 +96,9 @@ const FAQPage = () => {
                   <td>{faq.Status}</td>
                   <td>{faq.Category}</td>
                   <td>{faq.Sub_Category}</td>
+                  <td>
+                    <button onClick={() => handleDeleteFAQ(faq._id)}>Delete</button>
+                  </td>
                 </tr>
               ))}
             </tbody>

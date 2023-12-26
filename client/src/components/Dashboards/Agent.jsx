@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import './User.css'; // Import the styles
 
 const Agent = () => {
+  
   return (
     <div className="agent-dashboard">
       <nav className="navbar">
@@ -30,6 +31,10 @@ const Agent = () => {
         <Link to = "/AgentTicketsPage">
         <button>View Assigned Tickets</button>
         </Link>
+
+        <Link to="/UpdateUser" className="Update-user-button">
+        Update User
+      </Link>
     </div>
   );
 };

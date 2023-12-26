@@ -19,15 +19,13 @@ const ManagerDashboard = () => {
         <Link to="/FAQPage" className="nav-link">FAQ</Link>
       </nav>
 
-      <div className="content">
-        <h2>Hello Manager</h2>
-        {/* Other content in the user dashboard */}
-      </div>
+      
 
       {/* Create Ticket buttons */}
-      <Link to="/analytics" className="Show-Analytics">
-        Show Analytics
-      </Link>
+      <div className="button-container">
+    <Link to="/analytics" className="Show-Analytics">Show Analytics</Link>
+    <Link to="/UpdateUser" className="Update-user-button">Update User</Link>
+      </div>
     </div>
   );
 };

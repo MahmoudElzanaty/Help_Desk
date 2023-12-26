@@ -39,7 +39,7 @@
   }
   
   button {
-    background-color: #4caf50;
+    background-color: #6495ED;
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -50,11 +50,11 @@
   }
   
   button:hover {
-    background-color: #45a049;
+    background-color: #6495ED;
   }
   
   .success-message {
-    color: #4caf50;
+    color: #6495ED;
     margin-top: 10px;
   }
   
