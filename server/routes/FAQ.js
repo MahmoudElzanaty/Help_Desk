@@ -1,6 +1,6 @@
 const express = require("express");
 const FAQController = require("../controllers/FAQController");
-const authorizationMiddleware = require("../Middleware/authorizationMiddleware");
+//const authorizationMiddleware = require("../Middleware/authorizationMiddleware");
 const router = express.Router();
 router.get("/GetAll", FAQController.getAllFAQs);
 

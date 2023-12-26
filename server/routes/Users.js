@@ -3,26 +3,23 @@ const router = express.Router();
 const userController = require("../controllers/UserController");
 const authorizationMiddleware = require('../Middleware/authorizationMiddleware');
 
-
 // Get all users
-router.get("/GetAllUsers", authorizationMiddleware(['manager', 'agent' ,'admin']), userController.GetAllUsers);
+router.get("/GetAllUsers", authorizationMiddleware(['manager', 'agent']), userController.GetAllUsers);
 
 // Login
-router.post("/login", authorizationMiddleware(['agent', 'user', 'manager' ,'admin']), userController.login);
+router.post("/login", authorizationMiddleware(['agent', 'user', 'manager']), userController.login);
 
-router.post("/register", authorizationMiddleware(['agent', 'user', 'manager' , 'admin']), userController.register);
-
-//router.put("/makeAdmin" , authorizationMiddleware(['manager', 'agent' ,'admin']) , userController.makeAgent)
+router.post("/register", authorizationMiddleware(['agent', 'user', 'manager']), userController.register);
 
 
 // Get one user
-router.get("/getUserByid/:id", authorizationMiddleware(['agent', 'manager', 'admin']), userController.getUserByid);
+router.get("/getUserByid/:id", authorizationMiddleware(['agent', 'manager']), userController.getUserByid);
 
 // Update one user
-router.put("UpdateUser/:id", authorizationMiddleware(['manager', 'agent','admin']), userController.UpdateUser);
+router.put("UpdateUser/:id", authorizationMiddleware(['manager', 'agent']), userController.UpdateUser);
 
 // Delete one user
-router.delete("deleteUserById/:id", authorizationMiddleware(['manager' , 'admin']), userController.deleteUserById);
+router.delete("deleteUserById/:id", authorizationMiddleware(['manager']), userController.deleteUserById);
 //router.post("/makeAdmin", authorizationMiddleware(['manager']), userController.makeAdmin);
 
 

@@ -3,15 +3,35 @@ import ReactDOM from 'react-dom';
 import LoginForm from './components/loginComponent'; // Update the path
 import RegisterForm from './components/registerComponent';
 import HomePage from './components/homeComponent';
-import AdminDashboard from './components/Admin';
-import UserDashboard from './components/User';
-import ManagerDashboard from './components/Manager';
-import AgentDashboard from './components/Agent';
-import CreateTicketPage from './pages/createTicket'; // Adjust the import path
+import AdminDashboard from './components/Dashboards/Admin';
+import UserDashboard from './components/Dashboards/User';
+import ManagerDashboard from './components/Dashboards/Manager';
+import AgentDashboard from './components/Dashboards/Agent';
+import CreateTicketPage from './components/Tickets/createTicket'; // Adjust the import path
+import ViewTicketById from './components/Tickets/TicketByUserId';
+import ViewTicket from './components/Tickets/TicketList';
+import Reports from './components/Reports/reportComponent';
+import ReportsById from './components/Reports/reportByIdComponent';
+import ReportsPage from './components/Reports/ReportsPage';
+import AnalyticsView from './components/aanalyticsComponent';
+import WorkflowList from './components/Workflow/getAllWorkflow';
+import DeleteWorkflow from './components/Workflow/deleteWorkflow';
+import WorkflowById from './components/Workflow/getbyIdWorkflow';
+import CreateWorkflow from './components/Workflow/createWorkflow';
+import WorkflowUpdate from './components/Workflow/WorkflowUpdate';
+import FAQSearchPage from './components/FAQ/faqSearchComponent';
+import FAQSearch from './components/FAQ/FAQComponent';
+import CreateFAQPage from './components/FAQ/createFAQComponent';
+import DeleteFAQPage from './components/FAQ/deleteFAQ';
+import FAQPage from './components/FAQ/FAQPage';
+
+
+
+
 
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import UpdateTicketPage from './pages/updateTicket';
+import UpdateTicketPage from './components/Tickets/updateTicket';
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -50,6 +70,24 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/create-ticket" element={<CreateTicketPage />} />
           <Route path="/updateTicket" element={<UpdateTicketPage/>}/>
+          <Route path='/view-ticket' element={<ViewTicket />} />
+          <Route path='/ticket-byId' element={<ViewTicketById />} />
+          <Route path='/createReport' element={<Reports/>} />
+          <Route path='/analytics' element={<AnalyticsView />} />
+          <Route path='/report-byId' element={<ReportsById />} />
+          <Route path='/FAQPage' element={< FAQPage />} />
+          <Route path='/ReportsPage' element={< ReportsPage />} />
+          <Route path='/searchFAQ' element={<FAQSearch />} />
+          <Route path='/createFAQPage' element={<CreateFAQPage />} />
+          <Route path='/deleteFAQ' element={<DeleteFAQPage />} />
+          <Route path='/workflowList' element={<WorkflowList />} />
+          <Route path='/deleteWorkflow' element={<DeleteWorkflow />} />
+          <Route path='/workflowById' element={<WorkflowById />} />
+          <Route path='/FAQSearchPage' element={<FAQSearchPage />} />
+          <Route path='/WorkflowUpdate' element={<WorkflowUpdate />} />
+          <Route path='/CreateWorkflow' element={<CreateWorkflow />} />
+          
+
 
 
 

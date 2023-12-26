@@ -13,28 +13,14 @@ const reportController = {
       },
       createReport: async (req, res) => {
         try {
-          const newReport = await ReportsModel.create(req.body);
-          return res.status(201).json(newReport);
-        } catch (e) {
-          console.error("Error creating Report:", e);
-          return res.status(400).json({ message: e.message });
-        }
-      },
-      //Delete a Report
-deleteReport: async (req, res) => {
-    try {
-      const report = await ReportsModel.findByIdAndDelete(req.params.id);
-      return res.status(200).json({ report, msg: "deleted" });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  },
-
-  
- 
-  getGenearteReport: async (req, res) => {
-    try {
-        function calculateResolutionTime(createdAt, updatedAt) {
+          // Fetch the ticket data
+          const Tickets = await ticket.findById(req.params.id);
+      
+          if (!Tickets) {
+            return res.status(404).json({ error: 'Ticket not found' });
+          }
+      
+          function calculateResolutionTime(createdAt, updatedAt) {
             const createdDate = new Date(createdAt);
             const updatedDate = new Date(updatedAt);
           
@@ -46,33 +32,47 @@ deleteReport: async (req, res) => {
           
             return resolutionTimeSec;
           }
-
-          
-      const tickets = await ticket.findById(req.params.id);
-      const resolutionTime = await calculateResolutionTime(tickets.createdAt, tickets.updatedAt);
-      const ticketStatus = await tickets.Status;
-
-      const ratings = await tickets.userRate;
-
-      if (!tickets) {
-        return res.status(404).json({ error: 'Ticket not found' });
-      }
-  
-      if (tickets.Status === 'closed') {
-        // Calculate resolution time based on createdAt and updatedAt
-   
-        // Calculate average rating of the agent
-  
-        return res.status(200).json({ resolutionTime, tickets,ticketStatus,ratings });
-      } else {
-        return res.status(404).json({ error: 'The ticket is not closed yet' });
-      }
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
+          // Calculate resolution time
+          const resolutionTime = calculateResolutionTime(Tickets.createdAt, Tickets.updatedAt);
+      
+          // Fetch or calculate ticket status and ratings
+          const ticketStatus = await Tickets.Status;  // Replace with appropriate code
+          const ratings = await Tickets.userRate;      // Replace with appropriate code
+      const agentId = await ReportsModel.findOne(req.params.agent);
+          // Create a new report with the required fields
+          const newReport = await ReportsModel.create({
+            ResolutionTime: resolutionTime,
+            Status:ticketStatus,        // Replace with the actual agent name
+            agent:agentId,
+            UserRate: ratings,          // Replace with the actual UserRate value
+            tickets:Tickets ,        // Replace with the actual ticket ID
+            // ... other fields
+          });
+      
+          if (Tickets.Status === 'closed') {
+            return res.status(200).json(newReport);
+          } else {
+            return res.status(404).json({ error: 'The ticket is not closed yet' });
+          }
+        } catch (e) {
+          console.error("Error creating Report:", e);
+          return res.status(400).json({ message: e.message });
+        }
+      },
+      
+      
+      //Delete a Report
+deleteReport: async (req, res) => {
+    try {
+      const report = await ReportsModel.findByIdAndDelete(req.params.id);
+      return res.status(200).json({ report, msg: "deleted" });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
     }
   },
   getReportById: async (req, res) => {
     try {
+      console.log('Report ID:', req.params.id);
       const reportModel = await ReportsModel.findById(req.params.id);
       return res.status(200).json(reportModel);
     } catch (err) {
@@ -80,49 +80,40 @@ deleteReport: async (req, res) => {
     }
   },
   
-getAnalytics: async (req, res) => {
-    try {
-
-               
-async function calculateAverageAgentRating() {
-  try {
-    // Get distinct agents from the collection
-    const agents = await ticket.distinct('agent');
-
-    // Calculate average rating for each agent
-    const averageRatings = await Promise.all(
-      agents.map(async (agentId) => {
-        // Find all closed tickets for the agent with user ratings
-        const tickets = await ticket.find({
-          agent: agentId,
-          Status: 'closed',
-          userRate: { $exists: true }
-        }).select('userRate');
-
-        if (tickets.length === 0) {
-          return { agentId, averageRating: 0 }; // Default if no ratings are found
-        }
-
-        // Calculate average rating
-        const totalRating = tickets.reduce((sum, ticket) => sum + ticket.userRate, 0);
-        const averageRating = totalRating / tickets.length;
-
-        return { agentId, averageRating };
-      })
-    );
-
-    return averageRatings;
-  } catch (error) {
-    console.error('Error calculating average agent ratings:', error);
-    throw error;
-  }
-}
-      const totalTickets = await ticket.countDocuments();
-      const openTickets = await ticket.countDocuments({ Status: 'open' });
-      const closedTickets = await ticket.countDocuments({ Status: 'closed' });
-      const progressTickets = await ticket.countDocuments({ Status: 'in progress' });
+  getAnalytics: async (req, res) => {
+    const agentId = req.params.agent;
   
-      const avgRate = await calculateAverageAgentRating();
+    try {
+      async function calculateAverageAgentRating(agentId) {
+        try {
+          // Calculate average rating for the agent
+          const tickets = await ticket.find({
+            agent: agentId,
+            Status: 'closed',
+            userRate: { $exists: true }
+          }).select('userRate');
+  
+          if (tickets.length === 0) {
+            return { agentId, averageRating: 0 }; // Default if no ratings are found
+          }
+  
+          // Calculate average rating
+          const totalRating = tickets.reduce((sum, ticket) => sum + ticket.userRate, 0);
+          const averageRating = totalRating / tickets.length;
+  
+          return { agentId, averageRating };
+        } catch (error) {
+          console.error('Error calculating average agent ratings:', error);
+          throw error;
+        }
+      }
+  
+      const totalTickets = await ticket.countDocuments({ agent: agentId });
+      const openTickets = await ticket.countDocuments({ Status: 'open', agent: agentId });
+      const closedTickets = await ticket.countDocuments({ Status: 'closed', agent: agentId });
+      const progressTickets = await ticket.countDocuments({ Status: 'in progress', agent: agentId });
+  
+      const avgRate = await calculateAverageAgentRating(agentId);
   
       // Return the analytics data as JSON
       return res.status(200).json({
@@ -138,5 +129,5 @@ async function calculateAverageAgentRating() {
     }
   },
 
-};
+};  
 module.exports = reportController;

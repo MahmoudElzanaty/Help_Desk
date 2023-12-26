@@ -1,15 +1,16 @@
+
 // UserDashboard.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './User.css'; // Import the styles
 
-const AdminDashboard = () => {
+const Agent = () => {
   return (
-    <div className="admin-dashboard">
+    <div className="agent-dashboard">
       <nav className="navbar">
-        <Link to="/dashboard" className="nav-link">Dashboard</Link>
-        <Link to="/profile" className="nav-link">Profile</Link>
-        <Link to="/settings" className="nav-link">Settings</Link>
+      <Link to="/dashboard" className="nav-link">Dashboard</Link>
+        <Link to="/ReportsPage" className="nav-link">Reports</Link>
+        <Link to="/FAQPage" className="nav-link">FAQ</Link>
       </nav>
 
       <div className="content">
@@ -18,11 +19,29 @@ const AdminDashboard = () => {
       </div>
 
       {/* Create Ticket button outside the navbar */}
-      <Link to="/create-ticket" className="create-ticket-button">
-        Create Ticket
-      </Link>
+      <Link to="/ticket-byId">
+          <button>View Tickets</button>
+        </Link>
     </div>
   );
 };
 
-export default AdminDashboard;
+export default Agent;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
