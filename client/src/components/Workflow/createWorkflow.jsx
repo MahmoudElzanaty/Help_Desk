@@ -22,12 +22,13 @@ const CreateWorkflowPage = () => {
 
   const handleCreateWorkflow = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/v1/Workflow/createWorkflow', {
+      const response = await fetch('http://localhost:3000/api/v1/createWorkflow', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(workflowData),
+        credentials: 'include',
       });
 
       if (response.ok) {

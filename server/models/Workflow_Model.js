@@ -6,6 +6,12 @@ const schemaOptions = {
 
 const WorkflowSchema = new mongoose.Schema(
     {
+      _id: {
+        type: String,
+        minLength: 3,
+        maxLength: 10,
+        required: false,
+      },
           user: {
             type: mongoose.Schema.Types.ObjectId,
               required: true,

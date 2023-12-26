@@ -48,7 +48,7 @@ router.post('/createFAQ' , FAQController.createFAQ);
 
 router.get('/getAllWorkflows' , WorkflowController.getAllWorkflows);
 
-router.get('/getWorkflowById/:id' , WorkflowController.getWorkflowById);
+router.get('/getWorkflowById' , WorkflowController.getWorkflowById);
 
 router.delete('/deleteWorkflowById/:id' , WorkflowController.deleteWorkflowById);
 
