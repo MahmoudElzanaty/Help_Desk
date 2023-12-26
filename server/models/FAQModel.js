@@ -7,14 +7,17 @@ const schemaOptions = {
 const FAQSchema = new mongoose.Schema({
   tickets: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: false,
     ref: "tickets", // Reference the T model
   },
-  status: {
-    type: Boolean,
-    default: true,
+
+  Question: {
+    type: String,
+    minLength: 3,
+    maxLength: 1000,
   },
-  TDescribtion: {
+  
+  Answer: {
     type: String,
     minLength: 3,
     maxLength: 1000,
@@ -22,12 +25,9 @@ const FAQSchema = new mongoose.Schema({
   FAQ_ID: {
     type: String,
     min: 1,
-    required: true,
+    required: false,
   },
-  Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' },
-
     
-  
   Category: {
     type: String,
     enum: ['Hardware', 'Software', 'Network'],

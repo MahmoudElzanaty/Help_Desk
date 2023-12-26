@@ -23,6 +23,8 @@ module.exports = function authenticationMiddleware(req, res, next) {
     // console.log(decoded.user)
     
     req.user = decoded.user;
+    console.log(decoded.user)
+
     next();
   });
 };

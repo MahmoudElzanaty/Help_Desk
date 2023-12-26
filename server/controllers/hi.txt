@@ -1,85 +1,23 @@
 
-/*
+  useEffect(() => {
+    // Fetch user ID from your authentication system
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/v1/getUserId', {
+          method: 'GET',
+          // Add headers or authentication token if needed
+        });
 
-
-  
-
-  // Create a new ticket
-  
- 
-
-  // Receive a ticket from the database
-  async receiveTicketFromDatabase(req, res) {
-    try {
-      const ticket = await Ticket.findById(req.params.id);
-      if (ticket) {
-        // Assuming you have these properties in your class
-        this.priorityQueues[ticket.priority][ticket.category].push(ticket);
-        console.log(`Received ticket from the database: (${ticket.priority}, ${ticket.category})`);
-        this.assignTickets();
-      } else {
-        console.log(`Ticket with ID ${req.params.id} not found in the database.`);
-      }
-      res.status(200).json({ message: 'Ticket received from the database' });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  }
-
-  // Get the next ticket
-  async getNextTicket(req, res) {
-    try {
-      const priorities = ['High', 'Medium', 'Low'];
-      for (const priority of priorities) {
-        const queue = this.priorityQueues[priority][category];
-        if (queue.length > 0) {
-          const ticket = queue.shift();
-          await Ticket.findByIdAndUpdate(ticket._id, { $set: { state: 'inProgress' } }, { new: true });
-          return res.status(200).json(ticket);
+        if (response.ok) {
+          const userData = await response.json();
+          setUserId(userData.userId);
+        } else {
+          console.error('Failed to fetch user ID');
         }
+      } catch (error) {
+        console.error('Error fetching user ID:', error);
       }
-      res.status(404).json({ message: 'No pending tickets found' });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  }
+    };
 
-  // Check if a ticket should be handled
-  
-  // Assign tickets to agents
-  async assignTickets(req, res) {
-    try {
-      const priorities = ['High', 'Medium', 'Low'];
-      for (const priority of priorities) {
-        for (const category of ['Software', 'Hardware', 'Network']) {
-          const queue = this.priorityQueues[priority][category];
-          while (queue.length > 0) {
-            const ticket = queue.shift();
-            const agent = this.agents[category];
-            if (agent.isAvailable()) {
-              const shouldHandle = await this.shouldHandleTicket({ body: { category } });
-              if (shouldHandle) {
-                agent.currentLoad.push(ticket);
-                await Ticket.findByIdAndUpdate(ticket._id, { $set: { state: 'inProgress' } }, { new: true });
-                console.log(`Ticket ${ticket._id} assigned to agent ${agent.category}`);
-              } else {
-                console.log(`Ticket ${ticket._id} not assigned to agent ${agent.category}`);
-              }
-            } else {
-              console.log(`Agent ${agent.category} is not available`);
-            }
-          }
-        }
-      }
-      res.status(200).json({ message: 'Tickets assigned successfully' });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  }
-
-  
- 
-  */
-
-
-
+    fetchUserId();
+  }, []); // The empty dependency array ensures this effect runs once on component mount

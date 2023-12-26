@@ -22,26 +22,17 @@ getById: async (req, res) => {
 },
 
 // Get FAQs based on Category and Sub_Category
- GetBySearch: async (req, res) => {
-  const { Category, Sub_Category } = req.query;
-
+GetBySearch: async (req, res) => {
   try {
-    
-    const faqs = await FAQ.find({
-      Category: Category,
-      Sub_Category: Sub_Category,
-    });
-
-    if (!faqs || faqs.length === 0) {
-      return res.status(404).json({ message: "FAQs not found" });
-    }
-
-    return res.status(200).json(faqs);
+    console.log('category:', req.query.Category);
+    console.log('sub category:', req.query.Sub_Category);
+    const searchFAQ = await FAQ.find({ Category: req.query.Category, Sub_Category: req.query.Sub_Category });
+    return res.status(200).json(searchFAQ);
   } catch (error) {
-    console.error("Error fetching FAQs:", error.message);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ error: error.message });
   }
 },
+
 
 
 
@@ -52,10 +43,8 @@ createFAQ: async (req, res) => {
   try {
     const {
       tickets,
-      status,
       TDescribtion,
       FAQ_ID,
-      Status,
       Category,
       Sub_Category
     } = req.body;
@@ -67,10 +56,8 @@ createFAQ: async (req, res) => {
 
     const newFAQ = new FAQ({
       tickets,
-      status: status || true,
       TDescribtion,
       FAQ_ID,
-      Status: Status || 'open',
       Category,
       Sub_Category
     });
