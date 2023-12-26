@@ -12,9 +12,10 @@ const secretKey = process.env.SECRET_KEY;
 
 const TicketsController = {
     createTicket: async (req, res) => {
+      console.log('Received POST request at /Tickets/createTicket');
         try {
+          const userId = req.user.userId; // Get userId from decoded token
           const {
-            user,
             agent,
             Category,
             Sub_Category,
@@ -25,13 +26,13 @@ const TicketsController = {
           } = req.body;
       
           // Check for required fields
-          if (!user || !Category || !Sub_Category || !TDescribtion ) {
+          if (!Category || !Sub_Category || !TDescribtion ) {
             return res.status(400).json({ error: 'All fields are required' });
           }
       
           // Create a new Ticket object with the provided data
           const newTicket = new Ticket({
-            user,
+            user:userId,
             agent,
             Category,
             Sub_Category,
@@ -134,5 +135,4 @@ const TicketsController = {
       
 
 };
-
 module.exports = TicketsController;
