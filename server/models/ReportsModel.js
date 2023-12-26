@@ -25,10 +25,6 @@ const ReportSchema = new mongoose.Schema({
     minLength: 1,
   },
 
-  
- 
-
-
     ResolutionTime: {
       type: Date,
       required: true,
@@ -37,7 +33,9 @@ const ReportSchema = new mongoose.Schema({
     UserRate: {
       type: Number,
       required: true,
-    }
+      default: 0,
+    },
+    Status: { type: String, enum: ['open', 'inProgress', 'closed'], default: 'open' },
 
 }, schemaOptions);
 

@@ -6,7 +6,7 @@ router.get("/GetAll", FAQController.getAllFAQs);
 
 router.get("/GetById/:id", FAQController.getById);
 
-router.get("/searchFAQ", FAQController.GetBySearch);
+router.get("/search", FAQController.GetBySearch);
 
 router.post("/CreateFAQ", FAQController.createFAQ);
 

@@ -23,7 +23,7 @@ getById: async (req, res) => {
 
 // Get FAQs based on Category and Sub_Category
  GetBySearch: async (req, res) => {
-  const { Category, Sub_Category } = req.query;
+  const { Category, Sub_Category } = req.body;
 
   try {
     
@@ -52,25 +52,23 @@ createFAQ: async (req, res) => {
   try {
     const {
       tickets,
-      status,
-      TDescribtion,
+      Question,
+      Answer,
       FAQ_ID,
-      Status,
       Category,
       Sub_Category
     } = req.body;
 
     // Validate that required fields are present
-    if (!tickets || !FAQ_ID || !Category || !Sub_Category) {
+    if (!tickets ||!Question||!Answer|| !FAQ_ID || !Category || !Sub_Category) {
       return res.status(400).json({ error: 'Incomplete data for FAQ creation' });
     }
 
     const newFAQ = new FAQ({
       tickets,
-      status: status || true,
-      TDescribtion,
+      Question,
+      Answer,
       FAQ_ID,
-      Status: Status || 'open',
       Category,
       Sub_Category
     });

@@ -7,16 +7,14 @@ const router = express.Router();
 router.get("/all", ReportController.getAllReports);
 
 ////
-router.post("/create",ReportController.createReport);
+router.post("/create/:id",ReportController.createReport);
 
 // * Delete one product//
 router.delete("/delete/:id",ReportController.deleteReport);
 
-// * ///
-router.get("/GenearteReport/:id",ReportController.getGenearteReport);
 
 // *  one product//
 router.get("/getId/:id", ReportController.getReportById);
 
-router.get("/analytics", ReportController.getAnalytics);
+router.get("/analytics/:id", ReportController.getAnalytics);
 module.exports = router; // ! Don't forget to export the router

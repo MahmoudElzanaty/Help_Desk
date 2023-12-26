@@ -1,13 +1,12 @@
-import '../App.css';
+// Import necessary modules
 import React, { useState } from 'react';
+import './loginComponent.css'; // Import your CSS file for specific styling
 
-
-const LoginForm = () => {
+const LoginForm = ({ handleLogin }) => {
   const [formData, setFormData] = useState({
     Email: '',
     password: '',
   });
-  
 
   const [loginMessage, setLoginMessage] = useState('');
 
@@ -28,24 +27,28 @@ const LoginForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        credentials: 'include', 
+        credentials: 'include',
       });
 
       if (response.ok) {
-        setLoginMessage('Login successful');
+        const responseData = await response.json();
+        const role = responseData.user.role;
+        localStorage.setItem('loginMessage', JSON.stringify(responseData));
+        setLoginMessage(`Login successful. User role: ${role}`);
+        handleLogin(role);
       } else {
         setLoginMessage('Login failed. Please check your email and password.');
       }
     } catch (error) {
       console.error('Error:', error);
-      setLoginMessage('An error occurred during login. Please try again.');
+      setLoginMessage('An error occurred during login.');
     }
   };
 
   return (
-    <div>
+    <div className="login-form-container">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-form">
         <label>
           Email:
           <input
@@ -55,8 +58,6 @@ const LoginForm = () => {
             onChange={handleChange}
           />
         </label>
-
-        <br />
 
         <label>
           Password:
@@ -71,7 +72,7 @@ const LoginForm = () => {
         <button type="submit">Login</button>
       </form>
 
-      {loginMessage && <p>{loginMessage}</p>}
+      {loginMessage && <p className="login-message">{loginMessage}</p>}
     </div>
   );
 };

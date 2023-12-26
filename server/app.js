@@ -10,6 +10,7 @@ const userRouter = require("./routes/Users");
 const FAQ = require("./routes/FAQ");
 const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
+const cors = require("cors");
 
 const authRouter = require("./routes/auth");
 const Notification = require("./routes/Notifi");
@@ -51,7 +52,6 @@ require('dotenv').config();
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
 
-const cors = require("cors");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -60,34 +60,36 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: [process.env.ORIGIN, 'http://localhost:3001'], // Add 'http://localhost:3001' to the list of allowed origins
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })
 );
 
 app.use("/api/v1", authRouter);
+app.use("/Reports", Reports);
+app.use("/FAQ", FAQ);
+app.use("/Workflow", workflowRouter);
+
 app.use(authenticationMiddleware);
 app.use("/Tickets", ticketRouter);
-app.use("/Workflow", workflowRouter);
 app.use("/users", userRouter);
-app.use("/FAQ", FAQ);
 app.use("/Communication", Communication);
-app.use("/Reports", Reports);
+//app.use("/Reports", Reports);
 app.use("/Notifi", Notification);
 app.use("/api/v1/users", userRouter);
 
 
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS,HEAD");
-//   res.setHeader(
-//     "Access-Control-Expose-Headers",
-//     "*"
-//   );
+ app.use((req, res, next) => {
+   res.setHeader("Access-Control-Allow-Origin", "*");
+   res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS,HEAD");
+   res.setHeader(
+     "Access-Control-Expose-Headers",
+     "*"
+   );
 
-//   next();
-// });
+   next();
+});
 
 
 
@@ -114,7 +116,6 @@ app.use(function (req, res, next) {
   return res.status(404).send("404");
 });
 app.listen(process.env.PORT, () => console.log("server started"));
-
 
 
 
