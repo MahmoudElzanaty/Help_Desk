@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import './ReportsPage.css'; // Import your custom styles
 
-const ReportsPage = () => {
+const ReportsPageAgent = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,13 +40,13 @@ const ReportsPage = () => {
       <div className="page-header">
         <h1>All Reports</h1>
         <div className="buttons-container">
-        <Link to="/createReport" className="redirect-button">
-            Create Report
-          </Link>
+        
           <Link to="/report-byId" className="redirect-button">
             Get Report By ID
           </Link>
-          
+          <Link to="/Agent" className="redirect-button">
+            Back to Dashboard
+          </Link>
          
         </div>
       </div>
@@ -87,4 +87,4 @@ const ReportsPage = () => {
   );
 };
 
-export default ReportsPage;
+export default ReportsPageAgent;

@@ -8,8 +8,8 @@ const Agent = () => {
   return (
     <div className="agent-dashboard">
       <nav className="navbar">
-      <Link to="/dashboard" className="nav-link">Dashboard</Link>
-        <Link to="/ReportsPage" className="nav-link">Reports</Link>
+      <Link to="/workflowList" className="nav-link">Workflow</Link>
+        <Link to="/ReportsPageAgent" className="nav-link">Reports</Link>
         <Link to="/FAQPage" className="nav-link">FAQ</Link>
       </nav>
 
@@ -20,7 +20,15 @@ const Agent = () => {
 
       {/* Create Ticket button outside the navbar */}
       <Link to="/ticket-byId">
-          <button>View Tickets</button>
+          <button>View Tickets by id </button>
+        </Link>
+
+        <Link to = "/view-ticket">
+        <button>View Tickets</button>
+        </Link>
+
+        <Link to = "/AgentTicketsPage">
+        <button>View Assigned Tickets</button>
         </Link>
     </div>
   );

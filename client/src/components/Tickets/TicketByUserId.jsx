@@ -10,7 +10,7 @@ const TicketByUserId = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/Tickets/getTicketByUserId/${userId}`, {
+      const response = await fetch(`http://localhost:3000/api/v1/getTicketByUserId/${userId}`, {
         headers: {
           'Accept': 'application/json',
         },

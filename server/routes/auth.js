@@ -30,7 +30,7 @@ router.put('/updateTicket' , TicketsController.updateTicket);
 
 router.get('/getTicketsByAgentId' , TicketsController.getTicketsByAgentId);
 
-router.get('/getTicketsByUserId' , TicketsController.getTicketsByUserId);
+router.get('/getTicketsByUserId/:id' , TicketsController.getTicketsByUserId);
 
 router.get('/getAllTickets' ,  TicketsController.getAllTickets);
 
@@ -53,6 +53,8 @@ router.get('/getWorkflowById/:id' , WorkflowController.getWorkflowById);
 router.delete('/deleteWorkflowById/:id' , WorkflowController.deleteWorkflowById);
 
 router.post('/createWorkflow' , WorkflowController.createWorkflow);
+
+router.put('/UpdateUser' , UserController.UpdateUser);
 
 
 

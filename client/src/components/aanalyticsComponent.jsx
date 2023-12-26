@@ -76,7 +76,7 @@ const AnalyticsComponent = () => {
         </div>
       )}
 
-      <button onClick={() => navigate('/dashboard')}>Back to Dashboard</button>
+      <button onClick={() => navigate('/manager')}>Back to Dashboard</button>
     </div>
   );
 };

@@ -4,10 +4,10 @@ const userController = require("../controllers/UserController");
 const authorizationMiddleware = require('../Middleware/authorizationMiddleware');
 
 // Get all users
-router.get("/GetAllUsers", authorizationMiddleware(['manager', 'agent']), userController.GetAllUsers);
+router.get("/GetAllUsers", authorizationMiddleware(['manger', 'admin' , 'agent']), userController.GetAllUsers);
 
 // Login
-router.post("/login", authorizationMiddleware(['agent', 'user', 'manager']), userController.login);
+router.post("/login", authorizationMiddleware(['agent', 'user', 'manager' , 'admin']), userController.login);
 
 router.post("/register", authorizationMiddleware(['agent', 'user', 'manager']), userController.register);
 

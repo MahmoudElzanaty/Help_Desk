@@ -7,14 +7,14 @@ const router = express.Router();
 router.get("/allReports",authorizationMiddleware(['user','manager','agent']) , ReportController.getAllReports);
 
 ////
-router.post("/createReport/:id",authorizationMiddleware(['user','manager','agent']) ,ReportController.createReport);
+router.post("/createReport/:id",authorizationMiddleware(['admin','manager','agent']) ,ReportController.createReport);
 
 // * Delete one product//
-router.delete("/deleteReport/:id",authorizationMiddleware(['user','manager','agent']) ,ReportController.deleteReport);
+router.delete("/deleteReport/:id",authorizationMiddleware(['admin','manager','agent']) ,ReportController.deleteReport);
 
 
 // *  one product//
-router.get("/getReportById/:id",authorizationMiddleware(['user','manager','agent']) , ReportController.getReportById);
+router.get("/getReportById/:id",authorizationMiddleware(['admin','manager','agent']) , ReportController.getReportById);
 
-router.get("/analytics/:id",authorizationMiddleware(['user','manager','agent']) , ReportController.getAnalytics);
+router.get("/analytics/:id",authorizationMiddleware(['admin','manager','agent']) , ReportController.getAnalytics);
 module.exports = router; // ! Don't forget to export the router

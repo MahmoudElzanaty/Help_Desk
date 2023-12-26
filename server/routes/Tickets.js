@@ -4,20 +4,20 @@ const TicketsController = require("../controllers/TicketsController");
 const router = express.Router();
 const authorizationMiddleware = require('../Middleware/authorizationMiddleware');
 
-router.post("/createTicket" , authorizationMiddleware(['user','manager','agent']) , TicketsController.createTicket);
+router.post("/createTicket" , authorizationMiddleware(['user']) , TicketsController.createTicket);
 
-router.get("/getTicketByUserId/:id", TicketsController.getTicketsByUserId);
-router.get("/getAllTickets", TicketsController.getAllTickets);
+router.get("/getTicketByUserId/:id", authorizationMiddleware(['agent','manager' , 'admin']) ,TicketsController.getTicketsByUserId);
+router.get("/getAllTickets",authorizationMiddleware(['manger', 'admin' , 'agent']) , TicketsController.getAllTickets);
 
 //router.get("/", authorizationMiddleware(['manager', 'agent']), TicketsController.getAllTickets);
-router.get("/getTicketsByManagerId", authorizationMiddleware(['manager', 'agent']), TicketsController.getTicketsByManagerId);
-router.get("/getTicketsByAgentId", authorizationMiddleware(['manager', 'agent']), TicketsController.getTicketsByAgentId);
+router.get("/getTicketsByManagerId", authorizationMiddleware(['manger', 'admin' , 'agent']), TicketsController.getTicketsByManagerId);
+router.get("/getTicketsByAgentId", authorizationMiddleware(['manger', 'admin' , 'agent']), TicketsController.getTicketsByAgentId);
 
 
 
 
-router.put("/updateTicket", authorizationMiddleware(['manager', 'agent']), TicketsController.updateTicket);
+router.put("/updateTicket", authorizationMiddleware(['manger', 'admin' , 'agent']), TicketsController.updateTicket);
 
-router.delete("/deleteTicket/:id", authorizationMiddleware(['agent','manager']), TicketsController.deleteTicket);
+router.delete("/deleteTicket/:id", authorizationMiddleware(['manger', 'admin' , 'agent']), TicketsController.deleteTicket);
 
 module.exports = router;

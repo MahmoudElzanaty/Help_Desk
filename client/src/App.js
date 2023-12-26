@@ -24,6 +24,10 @@ import FAQSearch from './components/FAQ/FAQComponent';
 import CreateFAQPage from './components/FAQ/createFAQComponent';
 import DeleteFAQPage from './components/FAQ/deleteFAQ';
 import FAQPage from './components/FAQ/FAQPage';
+import FAQPageUser from './components/FAQ/FAQUser';
+import WorkflowListUser from './components/Workflow/WorkflowUser';
+import ReportsPageAgent from './components/Reports/ReportsPageAgent';
+import AgentTicketsPage from './components/Tickets/TicketListAgent';
 
 
 
@@ -86,6 +90,11 @@ function App() {
           <Route path='/FAQSearchPage' element={<FAQSearchPage />} />
           <Route path='/WorkflowUpdate' element={<WorkflowUpdate />} />
           <Route path='/CreateWorkflow' element={<CreateWorkflow />} />
+          <Route path='/FAQPageUser' element={<FAQPageUser />} />
+          <Route path='/WorkflowUser' element={<WorkflowListUser />} />
+          <Route path='/ReportsPageAgent' element={<ReportsPageAgent />} />
+          <Route path='/AgentTicketsPage' element={<AgentTicketsPage />} />
+
           
 
 

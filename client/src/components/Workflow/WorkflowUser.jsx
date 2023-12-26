@@ -1,9 +1,8 @@
 // WorkflowList.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import './WorkflowList.css'; // Import your custom styles
 
-const WorkflowList = () => {
+const WorkflowListUser = () => {
   const [workflows, setWorkflows] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -34,19 +33,7 @@ const WorkflowList = () => {
         <h2>Workflow List</h2>
         <div className="buttons-container">
 
-        <Link to="/createWorkflow">
-            <button className="nav-button">Create Workflow</button>
-          </Link>
-          <Link to="/getbyIdWorkflow">
-            <button className="nav-button">Get Workflow By Id</button>
-          </Link>
-          <Link to="/workflowUpdate">
-            <button className="nav-button">Update Workflow</button>
-          </Link>
-          <Link to="/deleteWorkflow">
-            <button className="nav-button">Delete Workflow</button>
-          </Link>
-          
+        
         </div>
       </div>
 
@@ -86,4 +73,4 @@ const WorkflowList = () => {
   );
 };
 
-export default WorkflowList;
+export default WorkflowListUser;
