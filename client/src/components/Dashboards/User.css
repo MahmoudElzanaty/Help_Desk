@@ -1,41 +1,56 @@
 /* UserDashboard.css */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-image: url('help9.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .user-dashboard {
-  max-width: 800px;
-  margin: 0 auto;
+  height: 100vh; /* Take up the entire viewport height */
+  margin: 0;
   padding: 20px;
-  border: 1px solid #eaeaea;
+  border: 1px solid #007BFF; /* Blue border */
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: #3498db; /* Blue background color */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .navbar {
   display: flex;
   justify-content: space-around;
-  background-color: #333;
+  background: linear-gradient(to right, #ffcc00, #007BFF); /* Gradient background color */
   padding: 10px;
   border-radius: 8px 8px 0 0;
 }
 
+
+
 .navbar a {
   text-decoration: none;
-  color: #ffffff;
+  color: #ffffff; /* White text color */
   font-weight: bold;
   font-size: 16px;
   transition: color 0.3s ease;
 }
 
 .navbar a:hover {
-  color: #ffcc00;
+  color: #ffcc00; /* Yellow text color on hover */
 }
 
 .content {
   padding: 20px;
+  color: #ffffff; /* White text color */
 }
 
 .create-ticket-button {
-  background-color: #4caf50;
-  color: #ffffff;
+  background-color: #3498db; /* Blue background color */
+  color: #ffffff; /* White text color */
   font-size: 16px;
   font-weight: bold;
   padding: 10px 20px;
@@ -46,5 +61,5 @@
 }
 
 .create-ticket-button:hover {
-  background-color: #45a049;
+  background-color: #007BFF; /* Darker blue on hover */
 }
