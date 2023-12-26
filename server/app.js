@@ -11,6 +11,7 @@ const FAQ = require("./routes/FAQ");
 const Reports = require("./routes/Reports");
 const Communication = require("./routes/Communication");
 
+
 const authRouter = require("./routes/auth");
 const Notification = require("./routes/Notifi");
 //
@@ -51,7 +52,7 @@ require('dotenv').config();
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 const authorizatonMiddleware = require("./Middleware/authorizationMiddleware");
 
-const cors = require("cors");
+const cors = require('cors');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

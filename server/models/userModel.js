@@ -29,7 +29,19 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ['user','agent','manger','admin'] // Set default value to 'user'
-    }
+    },
+    MFA: {
+      enabled: {
+        type: Boolean,
+        default: false,
+      },
+      secret: {
+        type: String,
+      },
+      tempSecret: {
+        type: String,
+      },
+    },
 }, schemaOptions);
 
 // Use UserSchema as the model for the "Users" collection

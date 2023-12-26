@@ -2,6 +2,8 @@ const sessionModel = require("../models/SessionModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require('../models/userModel');
+const qrcode = require("qrcode");
+const { authenticator } = require("otplib");
 require('dotenv').config();
 
 
@@ -77,6 +79,24 @@ const UserController = {
         return res.status(405).json({ message: 'Incorrect password' });
       }
 
+       // Check if 2FA is enabled for the user
+    if (user["MFA"].enabled) {
+      if (!code) {
+        // If 2FA is enabled, but the code is not provided, indicate that the code is required
+        return res.json({
+          codeRequested: true,
+        });
+      }
+
+      // Check if the provided code is valid
+      const verified = authenticator.check(code, user["MFA"].secret);
+      if (!verified) {
+        return res.status(405).json({ message: 'Incorrect  code' });
+      }
+    }
+
+
+
       const currentDateTime = new Date();
       const expiresAt = new Date(+currentDateTime + 1800000); // expire in 3 minutes
 
@@ -94,6 +114,8 @@ const UserController = {
         expiresAt: expiresAt,
       });
 
+      res.cookie('userId', user._id, { httpOnly: true });
+
       await newSession.save();
 
       return res
@@ -110,6 +132,97 @@ const UserController = {
       res.status(500).json({ message: 'Server error' });
     }
   },
+
+    // Route to generate QR code for MFA
+    generateMFACode: async (req, res) => {
+      try {
+        const { id } = req.cookies;
+  
+        // Fetch user from MongoDB using Mongoose model
+        const user = await User.findById(id);
+  
+        if (!user) {
+          return res.status(404).json({
+            success: false,
+            message: "User not found",
+          });
+        }
+  
+        // Generate a temporary secret for MFA
+        const secret = authenticator.generateSecret();
+  
+        // Create a URI for the QR code
+        const uri = authenticator.keyuri(id, "HelpDesk", secret);
+  
+        // Generate QR code image
+        const image = await qrcode.toDataURL(uri);
+  
+        // Save the temporary secret in user data
+        user["MFA"].tempSecret = secret;
+  
+        // Save the updated user document to MongoDB
+        await user.save();
+  
+        return res.json({
+          success: true,
+          image,
+        });
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+          success: false,
+          message: "Internal Server Error",
+        });
+      }
+    },
+  
+    // Route to set up MFA
+    setMFA: async (req, res) => {
+      try {
+        const { id } = req.cookies;
+        const { code } = req.query;
+  
+        // Fetch user from MongoDB using Mongoose model
+        const user = await User.findById(id);
+  
+        if (!user) {
+          return res.status(404).json({
+            success: false,
+            message: "User not found",
+          });
+        }
+  
+        // Retrieve the temporary secret from user data
+        const { tempSecret } = user["MFA"];
+  
+        // Check if the provided code is valid
+        const verified = authenticator.check(code, tempSecret);
+        if (!verified) {
+          throw new Error("Invalid MFA code");
+        }
+  
+        // Enable MFA for the user
+        user["MFA"] = {
+          enabled: true,
+          secret: tempSecret,
+        };
+  
+        // Save the updated user document to MongoDB
+        await user.save();
+  
+        return res.json({
+          success: true,
+        });
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+          success: false,
+          message: "Internal Server Error",
+        });
+      }
+    },
+
+
   createUser: async (req, res) => {
     try {
       const { user_id, Email, is_Agent, is_Manager, Phone_Number, Rate } = req.body;

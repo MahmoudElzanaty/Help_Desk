@@ -9,6 +9,12 @@ router.get("/GetAllUsers", authorizationMiddleware(['manager', 'agent']), userCo
 // Login
 router.post("/login", authorizationMiddleware(['agent', 'user', 'manager']), userController.login);
 
+// Route to generate QR code for MFA
+router.get("/generateMFACode", authorizationMiddleware(['user']), userController.generateMFACode);
+
+// Route to set up MFA
+router.get("/setMFA", authorizationMiddleware(['user']), userController.setMFA);
+
 router.post("/register", authorizationMiddleware(['agent', 'user', 'manager']), userController.register);
 
 
