@@ -23,8 +23,9 @@ import FAQSearchPage from './components/FAQ/faqSearchComponent';
 import FAQSearch from './components/FAQ/FAQComponent';
 import CreateFAQPage from './components/FAQ/createFAQComponent';
 import DeleteFAQPage from './components/FAQ/deleteFAQ';
+import UpdateUserRole from './components/makeAdminpage';
 import FAQPage from './components/FAQ/FAQPage';
-
+import CreateUser from './components/createUser'
 
 
 
@@ -86,7 +87,9 @@ function App() {
           <Route path='/FAQSearchPage' element={<FAQSearchPage />} />
           <Route path='/WorkflowUpdate' element={<WorkflowUpdate />} />
           <Route path='/CreateWorkflow' element={<CreateWorkflow />} />
-          
+          <Route path='/makeAdmin' element={< UpdateUserRole/>} />
+          <Route path='/createUser' element={< CreateUser/>} />
+
 
 
 

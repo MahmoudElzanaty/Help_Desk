@@ -15,6 +15,9 @@ router.post("/login",UserController.login );
 router.post("/register",UserController.register);
 
 //router.put("/makeAgent" , UserController.makeAgent)
+router.post("/CreateUser", UserController.CreateUser);
+
+router.put("/updateRole/:id", UserController.updateRole);
 
 router.post("/createTicket" ,TicketsController.createTicket);
 

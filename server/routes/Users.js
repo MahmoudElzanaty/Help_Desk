@@ -12,6 +12,8 @@ router.post("/login", authorizationMiddleware(['agent', 'user', 'manager']), use
 router.post("/register", authorizationMiddleware(['agent', 'user', 'manager']), userController.register);
 
 
+router.put('/updateRole/:id', authorizationMiddleware(['admin']), userController.updateRole);
+router.post('/CreateUser', authorizationMiddleware(['admin']), userController.CreateUser);
 // Get one user
 router.get("/getUserByid/:id", authorizationMiddleware(['agent', 'manager']), userController.getUserByid);
 
