@@ -37,7 +37,7 @@ const WorkflowList = () => {
         <Link to="/createWorkflow">
             <button className="nav-button">Create Workflow</button>
           </Link>
-          <Link to="/getbyIdWorkflow">
+          <Link to="/workflowById">
             <button className="nav-button">Get Workflow By Id</button>
           </Link>
           <Link to="/workflowUpdate">

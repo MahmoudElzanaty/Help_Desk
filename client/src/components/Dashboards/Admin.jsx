@@ -21,6 +21,9 @@ const AdminDashboard = () => {
       <Link to="/create-ticket" className="create-ticket-button">
         Create Ticket
       </Link>
+      <Link to="/create-ticket" className="create-ticket-button">
+        Create Ticket
+      </Link>
     </div>
   );
 };

@@ -56,6 +56,8 @@ router.post('/createWorkflow' , WorkflowController.createWorkflow);
 
 router.put('/UpdateUser' , UserController.UpdateUser);
 
+router.put('/updateWorkflowById/:id' , WorkflowController.updateWorkflowById);
+
 
 
 module.exports = router; // ! Don't forget to export the router

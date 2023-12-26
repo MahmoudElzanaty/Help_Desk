@@ -26,7 +26,7 @@ const UpdateWorkflowPage = () => {
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:3000/Workflow/updateWorkflowById/${workflowId}`, {
+      const response = await fetch(`http://localhost:3000/api/v1/updateWorkflowById/${workflowId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

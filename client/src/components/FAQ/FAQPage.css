@@ -3,7 +3,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #6495ED; /* Blue background color */
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -16,7 +16,7 @@
 }
 
 h1 {
-  color: #333;
+  color: #6495ED; /* Blue text color */
 }
 
 .buttons-container {
@@ -24,7 +24,7 @@ h1 {
 }
 
 .redirect-button {
-  background-color: #4caf50;
+  background-color: #6495ED; /* Blue button background color */
   color: white;
   padding: 10px 15px;
   border: none;
@@ -36,7 +36,7 @@ h1 {
 }
 
 .redirect-button:hover {
-  background-color: #45a049;
+  background-color: #4169E1; /* Darker blue on hover */
 }
 
 .faqs-table-container {
@@ -51,12 +51,12 @@ h1 {
 
 .faqs-table th,
 .faqs-table td {
-  border: 1px solid #ddd;
+  border: 1px solid #6495ED; /* Blue border color */
   padding: 12px;
   text-align: left;
 }
 
 .faqs-table th {
-  background-color: #4caf50;
+  background-color: #6495ED; /* Blue table header background color */
   color: white;
 }
