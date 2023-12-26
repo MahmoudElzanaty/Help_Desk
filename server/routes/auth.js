@@ -52,6 +52,8 @@ router.get('/getWorkflowById/:id' , WorkflowController.getWorkflowById);
 
 router.delete('/deleteWorkflowById/:id' , WorkflowController.deleteWorkflowById);
 
+router.put('/updateWorkflowById/:id' , WorkflowController.updateWorkflowById);
+
 router.post('/createWorkflow' , WorkflowController.createWorkflow);
 
 
