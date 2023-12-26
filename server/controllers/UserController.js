@@ -110,35 +110,6 @@ const UserController = {
       res.status(500).json({ message: 'Server error' });
     }
   },
-  createUser: async (req, res) => {
-    try {
-      const { user_id, Email, is_Agent, is_Manager, Phone_Number, Rate } = req.body;
-
-      const existingUser = await User.findOne({ Email });
-
-      if (existingUser) {
-        return res.status(409).json({ error: 'User already exists' });
-      }
-
-      if (!user_id || !Email) {
-        return res.status(400).json({ error: 'Incomplete data for user creation' });
-      }
-
-      const newUser = new User({
-        user_id,
-        Email,
-        is_Agent: is_Agent || false,
-        is_Manager: is_Manager || false,
-        Phone_Number,
-        Rate: Rate || 0,
-      });
-
-      const savedUser = await newUser.save();
-      res.status(201).json(savedUser);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
 
   makeAgent: async (req, res) => {
     try {
@@ -254,7 +225,77 @@ const UserController = {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  }, 
+  updateRole: async (req, res) => {
+    try {
+      const { role } = req.body;
+
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        { role },
+        { new: true }
+      );
+      if (!updatedUser) {
+        console.log('User not found:', req.params.id);
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      console.log('User role updated successfully:', updatedUser);
+      return res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error('Error updating user role:', error);
+      return res.status(500).json({ error: error.message });
+    }
+  },
+  CreateUser:async (req, res) => {
+    try {
+      const { user_id, Email, password, Phone_Number, role } = req.body;
+  
+      // Validate user role
+      if (!['user', 'manager','agent'].includes(role)) {
+        return res.status(400).json({ message: "Invalid user role" });
+      }
+  
+      const existingUser = await User.findOne({ Email });
+      if (existingUser) {
+        return res.status(409).json({ message: 'User already exists' });
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      const newUser = await User.create({
+        user_id,
+        Email,
+        password: hashedPassword,
+        Phone_Number,
+        role
+      });
+  
+      // Set req.user after successful registration
+      req.user = {
+        user_id: newUser.user_id,
+        role: newUser.role,
+        // Add any other relevant user information here
+      };
+  
+      // Generate JWT token after successful registration
+      const token = jwt.sign(
+        { user: req.user.user_id },
+        secretKey,
+        { expiresIn: '1h' }
+      );
+  
+      // Set token as cookie for future requests
+      res.cookie('token', token, { httpOnly: true });
+  
+      // Respond with user data and token
+      res.status(201).json({ user: newUser, token });
+    } catch (error) {
+      console.error('Error creating user:', error);
+      res.status(400).json({ message: error.message });
+    }
+  },
+
 
  
 };

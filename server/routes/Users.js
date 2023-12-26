@@ -21,6 +21,10 @@ router.put("UpdateUser/:id", authorizationMiddleware(['manager', 'agent']), user
 // Delete one user
 router.delete("deleteUserById/:id", authorizationMiddleware(['manager']), userController.deleteUserById);
 //router.post("/makeAdmin", authorizationMiddleware(['manager']), userController.makeAdmin);
+// Assuming you have an Express router instance named 'router'
+router.put('/updateRole/:id', authorizationMiddleware(['admin']), userController.updateRole);
 
+
+router.post('/CreateUser', authorizationMiddleware(['admin']), userController.CreateUser);
 
 module.exports = router;

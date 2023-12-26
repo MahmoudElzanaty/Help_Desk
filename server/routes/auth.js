@@ -55,5 +55,13 @@ router.delete('/deleteWorkflowById/:id' , WorkflowController.deleteWorkflowById)
 router.post('/createWorkflow' , WorkflowController.createWorkflow);
 
 
+router.put("/UpdateUser/:id", UserController.UpdateUser);
+
+
+router.put("/updateRole/:id", UserController.updateRole);
+
+
+
+router.post("/CreateUser", UserController.CreateUser);
 
 module.exports = router; // ! Don't forget to export the router

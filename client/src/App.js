@@ -24,6 +24,7 @@ import FAQSearch from './components/FAQ/FAQComponent';
 import CreateFAQPage from './components/FAQ/createFAQComponent';
 import DeleteFAQPage from './components/FAQ/deleteFAQ';
 import FAQPage from './components/FAQ/FAQPage';
+import UpdateUserForm from './components/UpdateUser';
 
 
 
@@ -86,7 +87,9 @@ function App() {
           <Route path='/FAQSearchPage' element={<FAQSearchPage />} />
           <Route path='/WorkflowUpdate' element={<WorkflowUpdate />} />
           <Route path='/CreateWorkflow' element={<CreateWorkflow />} />
-          
+          <Route path='/updateUser' element={<UpdateUserForm />} />
+
+
 
 
 
