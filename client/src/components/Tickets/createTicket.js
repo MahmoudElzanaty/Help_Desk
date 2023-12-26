@@ -16,10 +16,10 @@ const CreateTicketPage = () => {
 
   useEffect(() => {
     // Load the user ID from the cookie on component mount
-    const storedUserId = Cookies.get('user_id');
-    console.log('Stored User ID:', storedUserId);
+    const storedUserId = Cookies.get('token');
+    console.log('Stored User ID:', storedUserId);  
     setUserId(storedUserId);
-  }, []); // The empty dependency array ensures this effect runs once on component mount
+  }, []);  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,61 +64,37 @@ const CreateTicketPage = () => {
         const result = await response.json();
         console.log('Ticket created successfully:', result);
         setTicketMessage('Ticket created successfully');
-      } else {
-        console.log('Error creating ticket:', response.status);
-        setTicketMessage('Error creating ticket. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setTicketMessage('An error occurred during the process of creating a ticket. Please try again.');
-    }
-  };
+        
 
 ////////////////////////////////////////////////////////////////Notifications///////////////////////////////// 
-/*   const Notification = async (e) => {
-    e.preventDefault();
-    try {
-      if (!userId) {
-        setTicketMessage('User ID not found. Please log in.');
-        return;
+// Call the notification endpoint after creating the ticket
+await fetch('http://localhost:3000/api/v1/Notifi/submit-ticket', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${userToken}`,
+  },
+  body: JSON.stringify({
+    // Your request payload here
+  }),
+  credentials: 'include', // Ensure this line is present
+});
+        } else {
+          console.log('Error creating ticket:', response.status && response.status);
+          setTicketMessage('Error creating ticket. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setTicketMessage('An error occurred during the process of creating a ticket. Please try again.');
       }
-  
-      const userToken = Cookies.get('token');
-      console.log('User Token:', userToken);
-      if (!userToken) {
-        setTicketMessage('User token not found. Please log in.');
-        return;
-      }
-  
-      const response = await fetch('http://localhost:3000/api/v1/Notifi/submit-ticket',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${userToken}`,
-        },
-        credentials: 'include', // Ensure this line is present
-      });
-      if (response.status === 201) {
-        const result = await response.json();
-        console.log('Ticket created successfully:', result);
-        setTicketMessage('Ticket created successfully');
-      } else {
-        console.log('Error creating ticket:', response.status);
-        setTicketMessage('Error creating ticket. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setTicketMessage('An error occurred during the process of creating a ticket. Please try again.');
-    }
-  };
-  */
-  
-  const categoryOptions = ['Hardware', 'Software', 'Network'];
-  const Sub_CategoryOptions = {
-    Hardware: ['Desktops', 'Laptops', 'Printers', 'Servers', 'Networking equipment'],
-    Software: ['Operating system', 'Application software', 'Custom software', 'Integration issues'],
-    Network: ['Email issues', 'Internet connection problems', 'Website errors'],
-  };
+    };
+    
+    const categoryOptions = ['Hardware', 'Software', 'Network'];
+    const Sub_CategoryOptions = {
+      Hardware: ['Desktops', 'Laptops', 'Printers', 'Servers', 'Networking equipment'],
+      Software: ['Operating system', 'Application software', 'Custom software', 'Integration issues'],
+      Network: ['Email issues', 'Internet connection problems', 'Website errors'],
+    };
 
   return (
     <div>

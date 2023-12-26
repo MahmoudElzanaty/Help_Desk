@@ -12,9 +12,10 @@ const secretKey = process.env.SECRET_KEY;
 
 const TicketsController = {
     createTicket: async (req, res) => {
+      console.log('Received POST request at /Tickets/createTicket');
         try {
+          const userId = req.user.userId; // Get userId from decoded token
           const {
-            user,
             agent,
             Category,
             Sub_Category,
@@ -25,13 +26,13 @@ const TicketsController = {
           } = req.body;
       
           // Check for required fields
-          if (!user || !Category || !Sub_Category || !TDescribtion ) {
+          if (!Category || !Sub_Category || !TDescribtion ) {
             return res.status(400).json({ error: 'All fields are required' });
           }
       
           // Create a new Ticket object with the provided data
           const newTicket = new Ticket({
-            user,
+            user:userId,
             agent,
             Category,
             Sub_Category,
@@ -97,9 +98,10 @@ const TicketsController = {
         res.status(500).json({ error: error.message });
       }
     },
-     getTicketsByAgentId : async (req, res) => {
+    getTicketsByAgentId: async (req, res) => {
       try {
-        const tickets = await Ticket.find({ agentId: req.params.id });
+        const agentId = req.user.userId; // Assuming agent ID is passed as a parameter
+        const tickets = await Ticket.find({ agent: agentId }); // Search for tickets with the specified agent ID
         return res.status(200).json(tickets);
       } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -134,5 +136,4 @@ const TicketsController = {
       
 
 };
-
 module.exports = TicketsController;

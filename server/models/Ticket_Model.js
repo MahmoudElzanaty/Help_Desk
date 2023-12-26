@@ -16,7 +16,6 @@ const ticketSchema = new mongoose.Schema(
       ref: "Agents", // Reference the Agents model
       required: false,
     },
-
     Category: {
       type: String,
       enum: ['Hardware', 'Software', 'Network'],

@@ -1,14 +1,21 @@
-/* AllTicketsPage.css */
+/* TicketList.css */
 
-.all-tickets-page {
+.agent-tickets-page {
   font-family: 'Arial', sans-serif;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.bold-text {
+  font-weight: bold;
 }
 
 h1 {
   color: #333;
+  margin-bottom: 20px;
 }
 
 .loading-message {
@@ -18,6 +25,7 @@ h1 {
 
 .error-message {
   color: #ff0000;
+  margin-bottom: 20px;
 }
 
 .ticket-list {
@@ -30,6 +38,8 @@ h1 {
   padding: 15px;
   margin-bottom: 20px;
   transition: transform 0.3s ease-in-out;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .ticket:hover {
@@ -42,9 +52,71 @@ h1 {
 }
 
 .ticket-detail {
-  margin: 5px 0;
+  margin: 10px 0;
   font-size: 16px;
   color: #444;
 }
 
-/* Add more styles as needed */
+.status-change {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.status-change select {
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.status-change button {
+  padding: 8px 15px;
+  background-color: #6495ED;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.status-change button:hover {
+  background-color: #45a049;
+}
+.header-box {
+  background-color: #6495ED;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.header-box h1 {
+  color: white;
+  margin: 0;
+}
+
+/* TicketList.css */
+
+.agent-tickets-page {
+  font-family: 'Arial', sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-box {
+  background-color: #6495ED; /* Green background color */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.header-box h1 {
+  color: white; /* White text color */
+  margin: 0;
+}
+
+/* Rest of your styles remain unchanged */

@@ -28,7 +28,7 @@ router.get('/getUserByid' , UserController.getUserByid);
 
 router.put('/updateTicket' , TicketsController.updateTicket);
 
-router.get('/getTicketsByAgentId' , TicketsController.getTicketsByAgentId);
+router.get('/getTicketsByAgentId/:id' , TicketsController.getTicketsByAgentId);
 
 router.get('/getTicketsByUserId/:id' , TicketsController.getTicketsByUserId);
 
@@ -46,6 +46,10 @@ router.get('/getAllFAQs' , FAQController.getAllFAQs);
 
 router.post('/createFAQ' , FAQController.createFAQ);
 
+router.get('/searchFAQ' , FAQController.GetBySearch);
+
+router.delete('/deleteFAQ/:id', FAQController.deleteFAQById);
+
 router.get('/getAllWorkflows' , WorkflowController.getAllWorkflows);
 
 router.get('/getWorkflowById/:id' , WorkflowController.getWorkflowById);
@@ -54,7 +58,14 @@ router.delete('/deleteWorkflowById/:id' , WorkflowController.deleteWorkflowById)
 
 router.post('/createWorkflow' , WorkflowController.createWorkflow);
 
-router.put('/UpdateUser' , UserController.UpdateUser);
+router.post("/CreateUser", UserController.CreateUser);
+
+router.put("/updateRole/:id", UserController.updateRole);
+
+router.put('/updateWorkflowById/:id' , WorkflowController.updateWorkflowById);
+
+router.put('/UpdateUser/:id' , UserController.UpdateUser)
+
 
 
 

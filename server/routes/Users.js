@@ -15,7 +15,8 @@ router.post("/register", authorizationMiddleware(['agent', 'user', 'manager']), 
 // Get one user
 router.get("/getUserByid/:id", authorizationMiddleware(['agent', 'manager']), userController.getUserByid);
 
-// Update one user
+router.put('/updateRole/:id', authorizationMiddleware(['admin']), userController.updateRole);
+router.post('/CreateUser', authorizationMiddleware(['admin']), userController.CreateUser);
 router.put("UpdateUser/:id", authorizationMiddleware(['manager', 'agent']), userController.UpdateUser);
 
 // Delete one user

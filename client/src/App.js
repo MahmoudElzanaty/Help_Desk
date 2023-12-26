@@ -20,7 +20,7 @@ import WorkflowById from './components/Workflow/getbyIdWorkflow';
 import CreateWorkflow from './components/Workflow/createWorkflow';
 import WorkflowUpdate from './components/Workflow/WorkflowUpdate';
 import FAQSearchPage from './components/FAQ/faqSearchComponent';
-import FAQSearch from './components/FAQ/FAQComponent';
+//import FAQSearch from './components/FAQ/FAQComponent';
 import CreateFAQPage from './components/FAQ/createFAQComponent';
 import DeleteFAQPage from './components/FAQ/deleteFAQ';
 import FAQPage from './components/FAQ/FAQPage';
@@ -28,6 +28,9 @@ import FAQPageUser from './components/FAQ/FAQUser';
 import WorkflowListUser from './components/Workflow/WorkflowUser';
 import ReportsPageAgent from './components/Reports/ReportsPageAgent';
 import AgentTicketsPage from './components/Tickets/TicketListAgent';
+import UpdateUserForm from './components/User/UpdateUser';
+import UpdateUserRole from './components/User/makeAdminpage';
+import CreateUser from './components/User/createUser'
 
 
 
@@ -81,7 +84,6 @@ function App() {
           <Route path='/report-byId' element={<ReportsById />} />
           <Route path='/FAQPage' element={< FAQPage />} />
           <Route path='/ReportsPage' element={< ReportsPage />} />
-          <Route path='/searchFAQ' element={<FAQSearch />} />
           <Route path='/createFAQPage' element={<CreateFAQPage />} />
           <Route path='/deleteFAQ' element={<DeleteFAQPage />} />
           <Route path='/workflowList' element={<WorkflowList />} />
@@ -94,6 +96,9 @@ function App() {
           <Route path='/WorkflowUser' element={<WorkflowListUser />} />
           <Route path='/ReportsPageAgent' element={<ReportsPageAgent />} />
           <Route path='/AgentTicketsPage' element={<AgentTicketsPage />} />
+          <Route path='/UpdateUser' element={<UpdateUserForm />} />
+          <Route path='/makeAdmin' element={< UpdateUserRole/>} />
+          <Route path='/createUser' element={< CreateUser/>} />
 
           
 

@@ -16,7 +16,7 @@
   .register-button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4caf50; /* Green */
+    background-color: #6495ED; /* Green */
     color: white;
     border: none;
     border-radius: 5px;
@@ -26,6 +26,6 @@
   
   .login-button:hover,
   .register-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #0f4cbc; /* Darker green on hover */
   }
   
