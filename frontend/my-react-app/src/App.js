@@ -14,6 +14,9 @@ import Reports from './components/reportComponent';
 import AnalyticsView from './components/aanalyticsComponent';
 import ReportsById from './components/reportByIdComponent';
 import FAQSearch from "./components/FAQComponent";
+import FAQById from './components/FAQById';
+import WorkflowId from './components/WorkflowById';
+import WorkflowUpdate from './components/WorkflowUpdate';
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -65,6 +68,9 @@ function App() {
           <Route path='/analytics' element={<AnalyticsView />} />
           <Route path='/report-byId' element={<ReportsById />} />
           <Route path='/createFAQ' element={<FAQSearch />} />
+          <Route path='/FAQ_ById' element={<FAQById />} />
+          <Route path='/WorkflowUpdate' element={<WorkflowUpdate />} />
+          <Route path='/WorkflowSearch' element={<WorkflowId />} />
 
           {/* Redirect to login if the user is not authenticated */}
           <Route
