@@ -98,9 +98,10 @@ const TicketsController = {
         res.status(500).json({ error: error.message });
       }
     },
-     getTicketsByAgentId : async (req, res) => {
+    getTicketsByAgentId: async (req, res) => {
       try {
-        const tickets = await Ticket.find({ agentId: req.params.id });
+        const agentId = req.user.userId; // Assuming agent ID is passed as a parameter
+        const tickets = await Ticket.find({ agent: agentId }); // Search for tickets with the specified agent ID
         return res.status(200).json(tickets);
       } catch (error) {
         return res.status(500).json({ error: error.message });
