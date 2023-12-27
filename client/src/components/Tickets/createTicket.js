@@ -17,7 +17,7 @@ const CreateTicketPage = () => {
   useEffect(() => {
     // Load the user ID from the cookie on component mount
     const storedUserId = Cookies.get('token');
-    console.log('Stored User ID:', storedUserId);    
+    console.log('Stored User ID:', storedUserId);  
     setUserId(storedUserId);
   }, []);  
 
@@ -64,6 +64,7 @@ const CreateTicketPage = () => {
         const result = await response.json();
         console.log('Ticket created successfully:', result);
         setTicketMessage('Ticket created successfully');
+        
 
 ////////////////////////////////////////////////////////////////Notifications///////////////////////////////// 
 // Call the notification endpoint after creating the ticket

@@ -16,7 +16,7 @@ router.post("/register",UserController.register);
 
 //router.put("/makeAgent" , UserController.makeAgent)
 
-router.post("/createTicket" ,TicketsController.createTicket);
+router.post("/create-ticket" ,TicketsController.createTicket);
 
 router.post('/submit-ticket' , NotifiController.submitTicket);
 

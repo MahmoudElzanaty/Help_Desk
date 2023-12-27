@@ -41,6 +41,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import UpdateTicketPage from './components/Tickets/updateTicket';
 
 function App() {
+
   const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {

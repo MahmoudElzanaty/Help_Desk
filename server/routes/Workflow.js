@@ -5,10 +5,10 @@ const workflowController = require('../controllers/WorkflowController');
 const authorizationMiddleware = require('../Middleware/authorizationMiddleware');
 
 // Define routes for the workflow controller
-router.post('/createWorkflow', workflowController.createWorkflow);
-router.get('/getAllWorkflows', workflowController.getAllWorkflows);
-router.get('/getWorkflowById/:id', workflowController.getWorkflowById);
-router.put('/updateWorkflowById/:id', workflowController.updateWorkflowById);
-router.delete('/deleteWorkflowById/:id', workflowController.deleteWorkflowById);
+router.post('/createWorkflow',authorizationMiddleware(['agent', 'user', 'manager' , 'admin']), workflowController.createWorkflow);
+router.get('/getAllWorkflows',authorizationMiddleware(['agent', 'user', 'manager' , 'admin']), workflowController.getAllWorkflows);
+router.get('/getWorkflowById/:id', authorizationMiddleware(['agent', 'user', 'manager' , 'admin']),workflowController.getWorkflowById);
+router.put('/updateWorkflowById/:id',authorizationMiddleware(['agent', 'user', 'manager' , 'admin']), workflowController.updateWorkflowById);
+router.delete('/deleteWorkflowById/:id', authorizationMiddleware(['agent', 'user', 'manager' , 'admin']),workflowController.deleteWorkflowById);
 
 module.exports = router;
