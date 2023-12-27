@@ -6,7 +6,7 @@ const authorizationMiddleware = require('../Middleware/authorizationMiddleware')
 
 router.post("/createTicket" , authorizationMiddleware(['user']) , TicketsController.createTicket);
 
-router.get("/getTicketByUserId/:id", authorizationMiddleware(['agent','manager' , 'admin']) ,TicketsController.getTicketsByUserId);
+router.get("/getTicketByUserId/:id", authorizationMiddleware(['agent','manager' ,'user', 'admin']) ,TicketsController.getTicketsByUserId);
 router.get("/getAllTickets",authorizationMiddleware(['manger', 'admin' , 'agent']) , TicketsController.getAllTickets);
 
 //router.get("/", authorizationMiddleware(['manager', 'agent']), TicketsController.getAllTickets);

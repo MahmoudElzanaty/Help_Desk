@@ -13,6 +13,7 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #87cefa; /* Baby blue background color */
   color: #333; /* Dark text color for better visibility */
+  
 }
 
 .login-form label {

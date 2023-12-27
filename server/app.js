@@ -69,6 +69,7 @@ app.use(
 
 app.use("/api/v1", authRouter);
 app.use(authenticationMiddleware);
+app.use(authorizatonMiddleware);
 app.use("/api/v1/Tickets", ticketRouter);
 app.use("/api/v1/Workflow", workflowRouter);
 app.use("/api/v1/users", userRouter);
@@ -85,6 +86,7 @@ app.use("/api/v1/users", userRouter);
    res.setHeader(
      "Access-Control-Expose-Headers",
      "*" 
+     
 
    );
 

@@ -48,7 +48,10 @@ body {
   color: #ffffff; /* White text color */
 }
 
-.create-ticket-button {
+.create-ticket-button,
+.Update-user-button,
+.view-ticket-button
+ {
   background-color: #3498db; /* Blue background color */
   color: #ffffff; /* White text color */
   font-size: 16px;
@@ -60,6 +63,8 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.create-ticket-button:hover {
+.create-ticket-button:hover,
+.Update-user-button:hover,
+.view-ticket-button:hover {
   background-color: #007BFF; /* Darker blue on hover */
 }

@@ -23,9 +23,10 @@ const UserDashboard = () => {
       
 
       {/* Create Ticket button outside the navbar */}
-      <Link to="/create-ticket">
-        <button className="create-ticket-button">Create Ticket</button>
-      </Link>
+      
+      <Link to="/create-ticket" className="create-ticket-button">
+          Create Ticket
+        </Link>
 
       <Link to="/UpdateUser" className="Update-user-button">
           Update User

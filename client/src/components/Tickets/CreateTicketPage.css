@@ -1,50 +1,70 @@
-.create-ticket-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #eaeaea;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .ticket-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  input,
-  select,
-  textarea {
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #eaeaea;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  button {
-    background-color: #6495ED;
-    color: #ffffff;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .response-message {
-    margin-top: 20px;
-    color: #6495ED;
-    font-weight: bold;
-  }
-  
+:root {
+  --main-color: #6495ED;
+  --success-color: #4caf50;
+  --light-grey: #eaeaea;
+  --white: #ffffff;
+ }
+ 
+ /* Create Ticket Container */
+ .create-ticket-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid var(--light-grey);
+  border-radius: 8px;
+  background-color: var(--white);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+ }
+ 
+ /* Ticket Form */
+ .ticket-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ }
+ 
+ /* Form Group */
+ .form-group {
+  margin-bottom: 20px;
+  width: 100%;
+ }
+ 
+ /* Label */
+ label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+  text-align: center;
+ }
+ 
+ /* Input, Select, and Textarea */
+ input,
+ select,
+ textarea {
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid var(--light-grey);
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+ }
+ 
+ /* Button */
+ button {
+  background-color: var(--main-color);
+  color: var(--white);
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+ }
+ 
+ /* Response Message */
+ .response-message {
+  margin-top: 20px;
+  color: var(--success-color);
+  font-weight: bold;
+  text-align: center;
+ }

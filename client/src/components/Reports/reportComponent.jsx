@@ -77,7 +77,6 @@ const CreateReportForm = () => {
           <p>Resolution Time: {resolutionTime} seconds</p>
         </div>
       )}
-    <button onClick={() => navigate('/manager')}>Back to Dashboard</button>
     </div>
   );
 };

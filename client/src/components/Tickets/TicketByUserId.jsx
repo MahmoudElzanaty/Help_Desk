@@ -7,6 +7,7 @@ const TicketByUserId = () => {
   const [userId, setUserId] = useState('');
   const [tickets, setTickets] = useState([]);
   const navigate = useNavigate();
+  console.log(userId);
 
   const handleSearch = async () => {
     try {
