@@ -4,7 +4,7 @@ const authorizationMiddleware = require("../Middleware/authorizationMiddleware")
 const router = express.Router();
 
 // * Get all products//
-router.get("/allReports",authorizationMiddleware(['user','manager','agent']) , ReportController.getAllReports);
+router.get("/allReports",authorizationMiddleware(['user','manager','agent' , 'user']) , ReportController.getAllReports);
 
 ////
 router.post("/createReport/:id",authorizationMiddleware(['admin','manager','agent']) ,ReportController.createReport);
@@ -14,7 +14,7 @@ router.delete("/deleteReport/:id",authorizationMiddleware(['admin','manager','ag
 
 
 // *  one product//
-router.get("/getReportById/:id",authorizationMiddleware(['admin','manager','agent']) , ReportController.getReportById);
+router.get("/getReportById/:id",authorizationMiddleware(['admin','manager','agent' , 'user']) , ReportController.getReportById);
 
-router.get("/analytics/:id",authorizationMiddleware(['admin','manager','agent']) , ReportController.getAnalytics);
+router.get("/analytics/:id",authorizationMiddleware(['admin','manager','agent' ]) , ReportController.getAnalytics);
 module.exports = router; // ! Don't forget to export the router
